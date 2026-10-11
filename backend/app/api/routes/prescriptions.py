@@ -4,7 +4,7 @@ from typing import Any
 from uuid import uuid4
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 
-from app.api.dependencies.auth import require_clinic_user, store
+from app.api.dependencies.auth import require_clinic_user, require_doctor, store
 from app.services.drug_validator import drug_validator
 from app.utils.time import now_iso
 
@@ -135,26 +135,29 @@ def create_prescription(
 @router.post("/prescriptions/{prescription_id}/approve")
 def approve_prescription(
     prescription_id: str,
-    current_user: dict[str, Any] = Depends(require_clinic_user)
+    current_user: dict[str, Any] = Depends(require_doctor)
 ) -> dict[str, Any]:
     """Section 4.3: Structural Doctor Approval Gate.
-    
+
     Requirements:
-    1. Explicit human approval action by authenticated doctor.
+    1. Explicit human approval action by authenticated doctor (clinic_role must be
+       owner/doctor_owner/doctor — enforced by require_doctor, not just any clinic login).
     2. Writes is_approved = True and approved_at timestamp.
     3. Records approved_by audit trail.
     4. Mints per-prescription RX-XXXXXX token for WhatsApp reminder opt-in (Section 9.2).
     """
-    clinic_id = current_user.get("clinic_id") or "CLN-001"
-    approved_by = current_user.get("id") or "dr001"
+    clinic_id = current_user.get("clinic_id")
+    approved_by = current_user.get("id")
+    if not clinic_id or not approved_by:
+        raise HTTPException(status_code=401, detail="Session is missing clinic or user identity")
 
     try:
         approved_rx = store.approve_prescription(prescription_id, clinic_id, approved_by)
-        
+
         # Build reminder opt-in link
         rx_token = approved_rx.get("rx_token")
-        clinic_phone = current_user.get("phone") or "9876543210"
-        opt_in_link = f"https://wa.me/91{clinic_phone}?text=OPTIN%20{rx_token}"
+        clinic_phone = current_user.get("phone")
+        opt_in_link = f"https://wa.me/91{clinic_phone}?text=OPTIN%20{rx_token}" if clinic_phone else None
 
         return {
             "success": True,

@@ -38,6 +38,12 @@ def require_staff_admin(user: dict[str, Any] = Depends(require_clinic_user)) -> 
     return user
 
 
+def require_doctor(user: dict[str, Any] = Depends(require_clinic_user)) -> dict[str, Any]:
+    if user.get("clinic_role") not in {"owner", "doctor_owner", "doctor"}:
+        raise HTTPException(status.HTTP_403_FORBIDDEN, detail="Only a doctor can approve a prescription")
+    return user
+
+
 def require_portal_user(user: dict[str, Any] = Depends(get_current_user)) -> dict[str, Any]:
     if user.get("role") == "clinic":
         raise HTTPException(status.HTTP_403_FORBIDDEN, detail="Portal account required")

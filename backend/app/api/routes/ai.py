@@ -7,9 +7,12 @@ from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile, s
 from pydantic import BaseModel, Field
 
 from app.ai.adapter import DeIdentifier, get_llm_client, get_speech_client
+from app.api.dependencies.auth import require_clinic_user
 from app.services.drug_validator import drug_validator
 
-router = APIRouter(prefix="/ai", tags=["AI Integration"])
+# dependencies=[...] applies to every route in this file, including any added
+# later — a future route can't be added here without auth by mistake.
+router = APIRouter(prefix="/ai", tags=["AI Integration"], dependencies=[Depends(require_clinic_user)])
 
 
 class MedicineItemSchema(BaseModel):
