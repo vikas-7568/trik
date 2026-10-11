@@ -15,11 +15,11 @@
       "hb cbc",
       "hemogram",
       "khoon ki jaanch",
-      "platelet count",
       "seedhi si",
       "sidhi si",
       "tlc dlc"
-    ]
+    ],
+    "department": "General"
   },
   {
     "test_name": "Lipid Profile",
@@ -38,7 +38,8 @@
       "lipid test",
       "serum lipid",
       "triglycerides"
-    ]
+    ],
+    "department": "Cardiology"
   },
   {
     "test_name": "Liver Function Test (LFT)",
@@ -57,7 +58,8 @@
       "liver panel",
       "liver profile",
       "sgot sgpt"
-    ]
+    ],
+    "department": "Gastroenterology"
   },
   {
     "test_name": "Kidney Function Test (KFT)",
@@ -66,7 +68,6 @@
     "turnaround_time": "Same Day",
     "is_fasting_required": false,
     "common_aliases": [
-      "blood urea",
       "bun",
       "gurde ki jaanch",
       "kft",
@@ -76,9 +77,9 @@
       "kidney panel",
       "renal function test",
       "rft",
-      "rft test",
-      "serum creatinine"
-    ]
+      "rft test"
+    ],
+    "department": "Nephrology & Urology"
   },
   {
     "test_name": "Blood Sugar Fasting",
@@ -94,7 +95,8 @@
       "khali pet sugar",
       "subah ki sugar",
       "sugar fasting"
-    ]
+    ],
+    "department": "Endocrinology & Diabetes"
   },
   {
     "test_name": "Blood Sugar PP (Post Prandial)",
@@ -112,7 +114,8 @@
       "pp sugar",
       "ppbs",
       "sugar pp"
-    ]
+    ],
+    "department": "Endocrinology & Diabetes"
   },
   {
     "test_name": "Random Blood Sugar (RBS)",
@@ -128,7 +131,8 @@
       "rbs",
       "rbs test",
       "sugar test"
-    ]
+    ],
+    "department": "Endocrinology & Diabetes"
   },
   {
     "test_name": "HbA1c (Glycated Hemoglobin)",
@@ -145,7 +149,8 @@
       "hba1c (glycated hemoglobin)",
       "sugar average",
       "three month sugar"
-    ]
+    ],
+    "department": "Endocrinology & Diabetes"
   },
   {
     "test_name": "Thyroid Profile (TSH, T3, T4)",
@@ -161,9 +166,9 @@
       "thyroid jaanch",
       "thyroid profile",
       "thyroid profile (tsh, t3, t4)",
-      "thyroid test",
-      "tsh"
-    ]
+      "thyroid test"
+    ],
+    "department": "Endocrinology & Diabetes"
   },
   {
     "test_name": "Urine Routine & Microscopy (R/M)",
@@ -181,7 +186,8 @@
       "urine routine",
       "urine routine & microscopy (r/m)",
       "urine test"
-    ]
+    ],
+    "department": "General"
   },
   {
     "test_name": "Urine Culture & Sensitivity",
@@ -195,7 +201,8 @@
       "urine culture & sensitivity",
       "urine culture test",
       "urine sensitivity"
-    ]
+    ],
+    "department": "Infectious Disease"
   },
   {
     "test_name": "Serum Ferritin",
@@ -208,7 +215,8 @@
       "ferritin test",
       "iron store",
       "serum ferritin"
-    ]
+    ],
+    "department": "General"
   },
   {
     "test_name": "Serum Iron & TIBC",
@@ -222,7 +230,8 @@
       "serum iron & tibc",
       "tibc",
       "total iron binding capacity"
-    ]
+    ],
+    "department": "General"
   },
   {
     "test_name": "Vitamin D3 (25-Hydroxy)",
@@ -242,7 +251,8 @@
       "vitamin d3 (25 hydroxy)",
       "vitamin d3 (25-hydroxy)",
       "vitamin d3 (25hydroxy)"
-    ]
+    ],
+    "department": "Orthopaedics"
   },
   {
     "test_name": "Vitamin B12",
@@ -255,7 +265,8 @@
       "cyanocobalamin",
       "vit b12",
       "vitamin b12"
-    ]
+    ],
+    "department": "Neurology"
   },
   {
     "test_name": "Serum Calcium",
@@ -268,7 +279,8 @@
       "ionized calcium",
       "serum calcium",
       "total calcium"
-    ]
+    ],
+    "department": "Orthopaedics"
   },
   {
     "test_name": "Serum Electrolytes (Na+, K+, Cl-)",
@@ -285,7 +297,8 @@
       "serum electrolytes (na+, k+, cl)",
       "serum electrolytes (na+, k+, cl-)",
       "sodium potassium"
-    ]
+    ],
+    "department": "General"
   },
   {
     "test_name": "Serum Uric Acid",
@@ -297,7 +310,8 @@
       "gout test",
       "serum uric acid",
       "uric acid"
-    ]
+    ],
+    "department": "Rheumatology"
   },
   {
     "test_name": "CRP (C-Reactive Protein)",
@@ -314,11 +328,9 @@
       "crp (c-reactive protein)",
       "crp (creactive protein)",
       "crp test",
-      "hs crp",
-      "hs-crp",
-      "hscrp",
       "quantitative crp"
-    ]
+    ],
+    "department": "General"
   },
   {
     "test_name": "ESR (Erythrocyte Sedimentation Rate)",
@@ -331,7 +343,8 @@
       "esr",
       "esr (erythrocyte sedimentation rate)",
       "esr test"
-    ]
+    ],
+    "department": "General"
   },
   {
     "test_name": "Dengue NS1 Antigen + IgM/IgG",
@@ -347,7 +360,8 @@
       "dengue profile",
       "dengue serology",
       "dengue test"
-    ]
+    ],
+    "department": "Infectious Disease"
   },
   {
     "test_name": "Typhoid Widal Test",
@@ -357,12 +371,12 @@
     "is_fasting_required": false,
     "common_aliases": [
       "moti jhala test",
-      "typhidot",
       "typhoid test",
       "typhoid widal test",
       "widal",
       "widal test"
-    ]
+    ],
+    "department": "Infectious Disease"
   },
   {
     "test_name": "Malaria Antigen (Dual / Pv + Pf)",
@@ -377,7 +391,8 @@
       "malaria test",
       "mp test",
       "smear for mp"
-    ]
+    ],
+    "department": "Infectious Disease"
   },
   {
     "test_name": "D-Dimer",
@@ -392,7 +407,8 @@
       "d-dimer test",
       "ddimer",
       "ddimer test"
-    ]
+    ],
+    "department": "Cardiology"
   },
   {
     "test_name": "Troponin I / T",
@@ -408,7 +424,8 @@
       "trop t",
       "troponin",
       "troponin i / t"
-    ]
+    ],
+    "department": "Cardiology"
   },
   {
     "test_name": "PT / INR (Prothrombin Time)",
@@ -421,7 +438,8 @@
       "prothrombin time",
       "pt / inr (prothrombin time)",
       "pt inr"
-    ]
+    ],
+    "department": "Cardiology"
   },
   {
     "test_name": "Stool Routine & Occult Blood",
@@ -436,7 +454,8 @@
       "stool routine",
       "stool routine & occult blood",
       "stool test"
-    ]
+    ],
+    "department": "Gastroenterology"
   },
   {
     "test_name": "ECG (Electrocardiogram)",
@@ -451,7 +470,8 @@
       "ekg",
       "electrocardiogram",
       "heart tracing"
-    ]
+    ],
+    "department": "Cardiology"
   },
   {
     "test_name": "2D Echocardiogram (ECHO)",
@@ -465,7 +485,8 @@
       "2d echocardiography",
       "echo",
       "echocardiogram"
-    ]
+    ],
+    "department": "Cardiology"
   },
   {
     "test_name": "Chest X-Ray (PA View)",
@@ -492,13 +513,11 @@
       "seene ka x ray",
       "seene ka x-ray",
       "seene ka xray",
-      "x ray",
       "x ray chest",
-      "x-ray",
       "x-ray chest",
-      "xray",
       "xray chest"
-    ]
+    ],
+    "department": "Pulmonology"
   },
   {
     "test_name": "Ultrasound Abdomen & Pelvis (USG)",
@@ -517,9 +536,9 @@
       "ultrasound whole abdomen",
       "usg",
       "usg abdomen",
-      "usg abdomen & pelvis",
-      "usg pelvis"
-    ]
+      "usg abdomen & pelvis"
+    ],
+    "department": "Gastroenterology"
   },
   {
     "test_name": "CT Scan Head / Brain",
@@ -533,7 +552,8 @@
       "ct scan brain",
       "ct scan head / brain",
       "head ct"
-    ]
+    ],
+    "department": "Neurology"
   },
   {
     "test_name": "MRI Brain",
@@ -544,14 +564,9 @@
     "common_aliases": [
       "brain mri",
       "mri brain",
-      "mri head",
-      "mri scan",
-      "mri",
-      "mri scan karana",
-      "mri karana",
-      "mri karwana",
-      "magnetic resonance imaging"
-    ]
+      "mri head"
+    ],
+    "department": "Neurology"
   },
   {
     "test_name": "Mantoux Test (Tuberculin Skin Test)",
@@ -565,7 +580,8 @@
       "mantoux test (tuberculin skin test)",
       "tb skin test",
       "tst"
-    ]
+    ],
+    "department": "Pulmonology"
   },
   {
     "test_name": "Sputum for AFB",
@@ -578,7 +594,8 @@
       "sputum afb",
       "sputum for afb",
       "tb sputum test"
-    ]
+    ],
+    "department": "Pulmonology"
   },
   {
     "test_name": "MRI Scan",
@@ -593,6 +610,2568 @@
       "mri karwana",
       "magnetic resonance imaging",
       "mri scan karana"
+    ],
+    "department": "General"
+  },
+  {
+    "test_name": "Hemoglobin (Hb)",
+    "category": "Hematology",
+    "department": "General",
+    "specimen": "EDTA Whole Blood",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "haemoglobin",
+      "hb level",
+      "hb percent",
+      "hb test",
+      "hemoglobin",
+      "hemoglobin (hb)",
+      "khoon ki kami test"
+    ]
+  },
+  {
+    "test_name": "Platelet Count",
+    "category": "Hematology",
+    "department": "General",
+    "specimen": "EDTA Whole Blood",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "platelet count",
+      "platelet test",
+      "platelets",
+      "plt count"
+    ]
+  },
+  {
+    "test_name": "Peripheral Blood Smear",
+    "category": "Hematology",
+    "department": "General",
+    "specimen": "EDTA Whole Blood",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "blood smear",
+      "gbp",
+      "general blood picture",
+      "pbs",
+      "peripheral blood film",
+      "peripheral blood smear",
+      "peripheral smear"
+    ]
+  },
+  {
+    "test_name": "Reticulocyte Count",
+    "category": "Hematology",
+    "department": "General",
+    "specimen": "EDTA Whole Blood",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "retic count",
+      "reticulocyte count",
+      "reticulocytes"
+    ]
+  },
+  {
+    "test_name": "Blood Group & Rh Typing",
+    "category": "Hematology",
+    "department": "Pre-operative",
+    "specimen": "EDTA Whole Blood",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "abo rh",
+      "blood group",
+      "blood group & rh typing",
+      "blood group rh",
+      "blood grouping",
+      "khoon ka group"
+    ]
+  },
+  {
+    "test_name": "aPTT (Activated Partial Thromboplastin Time)",
+    "category": "Coagulation",
+    "department": "Pre-operative",
+    "specimen": "Citrated Plasma",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "activated partial thromboplastin time",
+      "aptt",
+      "aptt (activated partial thromboplastin time)",
+      "ptt"
+    ]
+  },
+  {
+    "test_name": "Bleeding Time & Clotting Time (BT/CT)",
+    "category": "Coagulation",
+    "department": "Pre-operative",
+    "specimen": "Capillary Blood",
+    "turnaround_time": "Immediate",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "bleeding time",
+      "bleeding time & clotting time (bt/ct)",
+      "bleeding time clotting time",
+      "bt ct",
+      "bt/ct",
+      "clotting time"
+    ]
+  },
+  {
+    "test_name": "Hb Electrophoresis (HPLC)",
+    "category": "Hematology",
+    "department": "General",
+    "specimen": "EDTA Whole Blood",
+    "turnaround_time": "2-3 Days",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "hb electrophoresis",
+      "hb electrophoresis (hplc)",
+      "hb variant analysis",
+      "hplc",
+      "thalassemia test"
+    ]
+  },
+  {
+    "test_name": "G6PD Screening",
+    "category": "Hematology",
+    "department": "General",
+    "specimen": "EDTA Whole Blood",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "g6pd",
+      "g6pd deficiency test",
+      "g6pd screening",
+      "g6pd test"
+    ]
+  },
+  {
+    "test_name": "Direct Coombs Test (DCT)",
+    "category": "Hematology",
+    "department": "Obstetrics & Gynaecology",
+    "specimen": "EDTA Whole Blood",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "dct",
+      "direct coombs",
+      "direct coombs test",
+      "direct coombs test (dct)"
+    ]
+  },
+  {
+    "test_name": "Indirect Coombs Test (ICT)",
+    "category": "Hematology",
+    "department": "Obstetrics & Gynaecology",
+    "specimen": "Serum",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "ict",
+      "indirect coombs",
+      "indirect coombs test",
+      "indirect coombs test (ict)"
+    ]
+  },
+  {
+    "test_name": "Serum Creatinine",
+    "category": "Biochemistry",
+    "department": "Nephrology & Urology",
+    "specimen": "Serum",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "creatinine",
+      "creatinine test",
+      "s creatinine",
+      "serum creatinine"
+    ]
+  },
+  {
+    "test_name": "Blood Urea",
+    "category": "Biochemistry",
+    "department": "Nephrology & Urology",
+    "specimen": "Serum",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "blood urea",
+      "blood urea level",
+      "serum urea",
+      "urea"
+    ]
+  },
+  {
+    "test_name": "Serum Phosphorus",
+    "category": "Biochemistry",
+    "department": "Orthopaedics",
+    "specimen": "Serum",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "phosphate test",
+      "phosphorus",
+      "s phosphorus",
+      "serum phosphate",
+      "serum phosphorus"
+    ]
+  },
+  {
+    "test_name": "Serum Magnesium",
+    "category": "Biochemistry",
+    "department": "General",
+    "specimen": "Serum",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "magnesium",
+      "mg level",
+      "serum magnesium"
+    ]
+  },
+  {
+    "test_name": "Alkaline Phosphatase (ALP)",
+    "category": "Biochemistry",
+    "department": "Orthopaedics",
+    "specimen": "Serum",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "alkaline phosphatase",
+      "alkaline phosphatase (alp)",
+      "alp",
+      "serum alkaline phosphatase"
+    ]
+  },
+  {
+    "test_name": "Total Protein & Albumin",
+    "category": "Biochemistry",
+    "department": "General",
+    "specimen": "Serum",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "a/g ratio",
+      "albumin",
+      "protein albumin",
+      "serum albumin",
+      "total protein",
+      "total protein & albumin"
+    ]
+  },
+  {
+    "test_name": "Serum Bilirubin (Total & Direct)",
+    "category": "Biochemistry",
+    "department": "Gastroenterology",
+    "specimen": "Serum",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "bilirubin",
+      "direct bilirubin",
+      "jaundice test",
+      "piliya test",
+      "serum bilirubin",
+      "serum bilirubin (total & direct)",
+      "total bilirubin"
+    ]
+  },
+  {
+    "test_name": "SGOT / SGPT",
+    "category": "Biochemistry",
+    "department": "Gastroenterology",
+    "specimen": "Serum",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "alt ast",
+      "liver enzymes",
+      "sgot",
+      "sgot / sgpt",
+      "sgpt",
+      "sgpt test"
+    ]
+  },
+  {
+    "test_name": "Serum Amylase",
+    "category": "Biochemistry",
+    "department": "Gastroenterology",
+    "specimen": "Serum",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "amylase",
+      "serum amylase"
+    ]
+  },
+  {
+    "test_name": "Serum Lipase",
+    "category": "Biochemistry",
+    "department": "Gastroenterology",
+    "specimen": "Serum",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "lipase",
+      "serum lipase"
+    ]
+  },
+  {
+    "test_name": "LDH (Lactate Dehydrogenase)",
+    "category": "Biochemistry",
+    "department": "General",
+    "specimen": "Serum",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "lactate dehydrogenase",
+      "ldh",
+      "ldh (lactate dehydrogenase)"
+    ]
+  },
+  {
+    "test_name": "Serum Folate",
+    "category": "Biochemistry",
+    "department": "General",
+    "specimen": "Serum",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "folate",
+      "folic acid level",
+      "serum folate",
+      "serum folic acid"
+    ]
+  },
+  {
+    "test_name": "Oral Glucose Tolerance Test (OGTT)",
+    "category": "Biochemistry",
+    "department": "Endocrinology & Diabetes",
+    "specimen": "Fluoride Plasma",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": true,
+    "common_aliases": [
+      "75 g glucose test",
+      "gct",
+      "glucose tolerance test",
+      "gtt",
+      "ogtt",
+      "oral glucose tolerance test (ogtt)",
+      "sugar load test"
+    ]
+  },
+  {
+    "test_name": "Serum Insulin (Fasting)",
+    "category": "Biochemistry",
+    "department": "Endocrinology & Diabetes",
+    "specimen": "Serum",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": true,
+    "common_aliases": [
+      "fasting insulin",
+      "insulin level",
+      "serum insulin",
+      "serum insulin (fasting)"
+    ]
+  },
+  {
+    "test_name": "C-Peptide",
+    "category": "Biochemistry",
+    "department": "Endocrinology & Diabetes",
+    "specimen": "Serum",
+    "turnaround_time": "1-2 Days",
+    "is_fasting_required": true,
+    "common_aliases": [
+      "c peptide",
+      "c-peptide"
+    ]
+  },
+  {
+    "test_name": "Urine Microalbumin / ACR",
+    "category": "Biochemistry",
+    "department": "Nephrology & Urology",
+    "specimen": "Spot Urine",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "albumin creatinine ratio",
+      "microalbumin",
+      "uacr",
+      "urine acr",
+      "urine microalbumin",
+      "urine microalbumin / acr"
+    ]
+  },
+  {
+    "test_name": "24-Hour Urine Protein",
+    "category": "Biochemistry",
+    "department": "Nephrology & Urology",
+    "specimen": "24-Hour Urine",
+    "turnaround_time": "1-2 Days",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "24 hour urine protein",
+      "24 hr urine protein",
+      "24-hour urine protein",
+      "urine protein 24 hours"
+    ]
+  },
+  {
+    "test_name": "Urine Protein Creatinine Ratio (UPCR)",
+    "category": "Biochemistry",
+    "department": "Nephrology & Urology",
+    "specimen": "Spot Urine",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "spot pcr",
+      "upcr",
+      "urine protein creatinine ratio",
+      "urine protein creatinine ratio (upcr)"
+    ]
+  },
+  {
+    "test_name": "Arterial Blood Gas (ABG)",
+    "category": "Biochemistry",
+    "department": "Pulmonology",
+    "specimen": "Arterial Blood",
+    "turnaround_time": "Immediate",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "abg",
+      "arterial blood gas",
+      "arterial blood gas (abg)",
+      "blood gas"
+    ]
+  },
+  {
+    "test_name": "Serum Ammonia",
+    "category": "Biochemistry",
+    "department": "Gastroenterology",
+    "specimen": "EDTA Plasma (on ice)",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "ammonia",
+      "serum ammonia"
+    ]
+  },
+  {
+    "test_name": "TSH (Thyroid Stimulating Hormone)",
+    "category": "Endocrinology",
+    "department": "Endocrinology & Diabetes",
+    "specimen": "Serum",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "s tsh",
+      "thyroid stimulating hormone",
+      "tsh",
+      "tsh (thyroid stimulating hormone)",
+      "tsh test"
+    ]
+  },
+  {
+    "test_name": "Free T3 / Free T4",
+    "category": "Endocrinology",
+    "department": "Endocrinology & Diabetes",
+    "specimen": "Serum",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "free t3",
+      "free t3 / free t4",
+      "free t4",
+      "ft3",
+      "ft3 ft4",
+      "ft4"
+    ]
+  },
+  {
+    "test_name": "Anti-TPO Antibodies",
+    "category": "Endocrinology",
+    "department": "Endocrinology & Diabetes",
+    "specimen": "Serum",
+    "turnaround_time": "1-2 Days",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "anti tpo",
+      "anti-tpo",
+      "anti-tpo antibodies",
+      "thyroid antibodies",
+      "tpo antibody"
+    ]
+  },
+  {
+    "test_name": "Serum Cortisol (Morning)",
+    "category": "Endocrinology",
+    "department": "Endocrinology & Diabetes",
+    "specimen": "Serum",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "8 am cortisol",
+      "cortisol",
+      "morning cortisol",
+      "serum cortisol",
+      "serum cortisol (morning)"
+    ]
+  },
+  {
+    "test_name": "Parathyroid Hormone (PTH)",
+    "category": "Endocrinology",
+    "department": "Orthopaedics",
+    "specimen": "EDTA Plasma",
+    "turnaround_time": "1-2 Days",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "intact pth",
+      "parathyroid hormone",
+      "parathyroid hormone (pth)",
+      "pth"
+    ]
+  },
+  {
+    "test_name": "Serum Prolactin",
+    "category": "Endocrinology",
+    "department": "Obstetrics & Gynaecology",
+    "specimen": "Serum",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "prl",
+      "prolactin",
+      "serum prolactin"
+    ]
+  },
+  {
+    "test_name": "LH (Luteinizing Hormone)",
+    "category": "Endocrinology",
+    "department": "Obstetrics & Gynaecology",
+    "specimen": "Serum",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "lh",
+      "lh (luteinizing hormone)",
+      "lh test",
+      "luteinizing hormone"
+    ]
+  },
+  {
+    "test_name": "FSH (Follicle Stimulating Hormone)",
+    "category": "Endocrinology",
+    "department": "Obstetrics & Gynaecology",
+    "specimen": "Serum",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "follicle stimulating hormone",
+      "fsh",
+      "fsh (follicle stimulating hormone)",
+      "fsh test"
+    ]
+  },
+  {
+    "test_name": "Serum Estradiol (E2)",
+    "category": "Endocrinology",
+    "department": "Obstetrics & Gynaecology",
+    "specimen": "Serum",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "e2",
+      "estradiol",
+      "serum estradiol",
+      "serum estradiol (e2)"
+    ]
+  },
+  {
+    "test_name": "Serum Progesterone",
+    "category": "Endocrinology",
+    "department": "Obstetrics & Gynaecology",
+    "specimen": "Serum",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "day 21 progesterone",
+      "progesterone",
+      "serum progesterone"
+    ]
+  },
+  {
+    "test_name": "AMH (Anti-Mullerian Hormone)",
+    "category": "Endocrinology",
+    "department": "Obstetrics & Gynaecology",
+    "specimen": "Serum",
+    "turnaround_time": "1-2 Days",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "amh",
+      "amh (anti-mullerian hormone)",
+      "anti mullerian hormone",
+      "egg reserve test"
+    ]
+  },
+  {
+    "test_name": "Serum Testosterone",
+    "category": "Endocrinology",
+    "department": "Endocrinology & Diabetes",
+    "specimen": "Serum",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "serum testosterone",
+      "testosterone",
+      "total testosterone"
+    ]
+  },
+  {
+    "test_name": "DHEA-S",
+    "category": "Endocrinology",
+    "department": "Obstetrics & Gynaecology",
+    "specimen": "Serum",
+    "turnaround_time": "1-2 Days",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "dhea sulphate",
+      "dhea-s",
+      "dheas"
+    ]
+  },
+  {
+    "test_name": "Urine Pregnancy Test (UPT)",
+    "category": "Clinical Pathology",
+    "department": "Obstetrics & Gynaecology",
+    "specimen": "Urine",
+    "turnaround_time": "Immediate",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "pregnancy card test",
+      "pregnancy test",
+      "upt",
+      "urine pregnancy test",
+      "urine pregnancy test (upt)"
+    ]
+  },
+  {
+    "test_name": "Serum Beta hCG",
+    "category": "Endocrinology",
+    "department": "Obstetrics & Gynaecology",
+    "specimen": "Serum",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "b hcg",
+      "beta hcg",
+      "bhcg",
+      "quantitative hcg",
+      "serum beta hcg",
+      "serum hcg"
+    ]
+  },
+  {
+    "test_name": "Antenatal Profile",
+    "category": "Panel",
+    "department": "Obstetrics & Gynaecology",
+    "specimen": "Blood + Urine",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "anc panel",
+      "anc profile",
+      "antenatal profile",
+      "pregnancy profile"
+    ]
+  },
+  {
+    "test_name": "Double Marker Test",
+    "category": "Prenatal Screening",
+    "department": "Obstetrics & Gynaecology",
+    "specimen": "Serum",
+    "turnaround_time": "2-3 Days",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "double marker",
+      "double marker test",
+      "dual marker"
+    ]
+  },
+  {
+    "test_name": "Quadruple Marker Test",
+    "category": "Prenatal Screening",
+    "department": "Obstetrics & Gynaecology",
+    "specimen": "Serum",
+    "turnaround_time": "2-3 Days",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "quad marker",
+      "quadruple marker",
+      "quadruple marker test",
+      "quadruple test"
+    ]
+  },
+  {
+    "test_name": "TORCH Panel",
+    "category": "Serology",
+    "department": "Obstetrics & Gynaecology",
+    "specimen": "Serum",
+    "turnaround_time": "1-2 Days",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "torch",
+      "torch panel",
+      "torch profile",
+      "torch test"
+    ]
+  },
+  {
+    "test_name": "Rubella IgG",
+    "category": "Serology",
+    "department": "Obstetrics & Gynaecology",
+    "specimen": "Serum",
+    "turnaround_time": "1-2 Days",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "rubella antibody",
+      "rubella igg"
+    ]
+  },
+  {
+    "test_name": "Pap Smear",
+    "category": "Cytology",
+    "department": "Obstetrics & Gynaecology",
+    "specimen": "Cervical Smear",
+    "turnaround_time": "2-3 Days",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "cervical smear",
+      "lbc",
+      "pap smear",
+      "pap test"
+    ]
+  },
+  {
+    "test_name": "HPV DNA Test",
+    "category": "Molecular",
+    "department": "Obstetrics & Gynaecology",
+    "specimen": "Cervical Swab",
+    "turnaround_time": "3-5 Days",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "hpv dna",
+      "hpv dna test",
+      "hpv test"
+    ]
+  },
+  {
+    "test_name": "High Vaginal Swab Culture",
+    "category": "Microbiology",
+    "department": "Obstetrics & Gynaecology",
+    "specimen": "Vaginal Swab",
+    "turnaround_time": "48 Hours",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "high vaginal swab",
+      "high vaginal swab culture",
+      "hvs culture",
+      "vaginal swab culture"
+    ]
+  },
+  {
+    "test_name": "USG Obstetric (Pregnancy Scan)",
+    "category": "Radiology",
+    "department": "Obstetrics & Gynaecology",
+    "specimen": "Ultrasound",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "bachche ki sonography",
+      "dating scan",
+      "obs scan",
+      "obstetric usg",
+      "pregnancy scan",
+      "usg obstetric",
+      "usg obstetric (pregnancy scan)",
+      "viability scan"
+    ]
+  },
+  {
+    "test_name": "NT Scan (Nuchal Translucency)",
+    "category": "Radiology",
+    "department": "Obstetrics & Gynaecology",
+    "specimen": "Ultrasound",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "nt nb scan",
+      "nt scan",
+      "nt scan (nuchal translucency)",
+      "nuchal scan",
+      "nuchal translucency"
+    ]
+  },
+  {
+    "test_name": "Anomaly Scan (Level II / TIFFA)",
+    "category": "Radiology",
+    "department": "Obstetrics & Gynaecology",
+    "specimen": "Ultrasound",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "anomaly scan",
+      "anomaly scan (level ii / tiffa)",
+      "level 2 scan",
+      "level ii scan",
+      "target scan",
+      "tiffa"
+    ]
+  },
+  {
+    "test_name": "Growth Scan",
+    "category": "Radiology",
+    "department": "Obstetrics & Gynaecology",
+    "specimen": "Ultrasound",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "fetal growth scan",
+      "growth scan"
+    ]
+  },
+  {
+    "test_name": "Obstetric Doppler",
+    "category": "Radiology",
+    "department": "Obstetrics & Gynaecology",
+    "specimen": "Ultrasound",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "fetal doppler",
+      "growth scan with doppler",
+      "obstetric doppler",
+      "umbilical artery doppler"
+    ]
+  },
+  {
+    "test_name": "USG Pelvis / TVS",
+    "category": "Radiology",
+    "department": "Obstetrics & Gynaecology",
+    "specimen": "Ultrasound",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "pelvic ultrasound",
+      "transvaginal scan",
+      "transvaginal sonography",
+      "tvs",
+      "usg pelvis",
+      "usg pelvis / tvs"
+    ]
+  },
+  {
+    "test_name": "Follicular Study",
+    "category": "Radiology",
+    "department": "Obstetrics & Gynaecology",
+    "specimen": "Ultrasound (serial)",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "follicle monitoring",
+      "follicular study",
+      "ovulation study"
+    ]
+  },
+  {
+    "test_name": "Hysterosalpingography (HSG)",
+    "category": "Radiology",
+    "department": "Obstetrics & Gynaecology",
+    "specimen": "Imaging",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "hsg",
+      "hysterosalpingography",
+      "hysterosalpingography (hsg)",
+      "tube test"
+    ]
+  },
+  {
+    "test_name": "Mammography",
+    "category": "Radiology",
+    "department": "Obstetrics & Gynaecology",
+    "specimen": "Imaging",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "mammogram",
+      "mammography"
+    ]
+  },
+  {
+    "test_name": "USG Breast",
+    "category": "Radiology",
+    "department": "Obstetrics & Gynaecology",
+    "specimen": "Ultrasound",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "breast sonography",
+      "breast ultrasound",
+      "usg breast"
+    ]
+  },
+  {
+    "test_name": "Non-Stress Test (NST)",
+    "category": "Diagnostics",
+    "department": "Obstetrics & Gynaecology",
+    "specimen": "Non-invasive",
+    "turnaround_time": "Immediate",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "cardiotocography",
+      "ctg",
+      "non stress test",
+      "non-stress test (nst)",
+      "nst"
+    ]
+  },
+  {
+    "test_name": "hs-CRP (High Sensitivity CRP)",
+    "category": "Cardiac Markers",
+    "department": "Cardiology",
+    "specimen": "Serum",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "high sensitivity crp",
+      "hs crp",
+      "hs-crp",
+      "hs-crp (high sensitivity crp)",
+      "hscrp"
+    ]
+  },
+  {
+    "test_name": "CK-MB",
+    "category": "Cardiac Markers",
+    "department": "Cardiology",
+    "specimen": "Serum",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "ck mb",
+      "ck-mb",
+      "cpk mb"
+    ]
+  },
+  {
+    "test_name": "CPK (Creatine Phosphokinase)",
+    "category": "Biochemistry",
+    "department": "Neurology",
+    "specimen": "Serum",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "ck total",
+      "cpk",
+      "cpk (creatine phosphokinase)",
+      "creatine kinase",
+      "creatine phosphokinase"
+    ]
+  },
+  {
+    "test_name": "NT-proBNP",
+    "category": "Cardiac Markers",
+    "department": "Cardiology",
+    "specimen": "Serum",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "bnp",
+      "nt probnp",
+      "nt-probnp",
+      "pro bnp"
+    ]
+  },
+  {
+    "test_name": "Treadmill Test (TMT)",
+    "category": "Diagnostics",
+    "department": "Cardiology",
+    "specimen": "Non-invasive",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "exercise stress test",
+      "stress test",
+      "tmt",
+      "treadmill test",
+      "treadmill test (tmt)"
+    ]
+  },
+  {
+    "test_name": "Holter Monitoring (24 Hours)",
+    "category": "Diagnostics",
+    "department": "Cardiology",
+    "specimen": "Non-invasive",
+    "turnaround_time": "1-2 Days",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "24 hour ecg",
+      "holter",
+      "holter monitoring",
+      "holter monitoring (24 hours)",
+      "holter test"
+    ]
+  },
+  {
+    "test_name": "Ambulatory BP Monitoring (ABPM)",
+    "category": "Diagnostics",
+    "department": "Cardiology",
+    "specimen": "Non-invasive",
+    "turnaround_time": "1-2 Days",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "24 hour bp monitoring",
+      "abpm",
+      "ambulatory bp",
+      "ambulatory bp monitoring (abpm)"
+    ]
+  },
+  {
+    "test_name": "Stress Echocardiography",
+    "category": "Diagnostics",
+    "department": "Cardiology",
+    "specimen": "Ultrasound",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "dobutamine stress echo",
+      "dse",
+      "stress echo",
+      "stress echocardiography"
+    ]
+  },
+  {
+    "test_name": "Coronary Angiography",
+    "category": "Procedure",
+    "department": "Cardiology",
+    "specimen": "Invasive",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "angio",
+      "angiography",
+      "cag",
+      "coronary angiography"
+    ]
+  },
+  {
+    "test_name": "CT Coronary Angiography",
+    "category": "Radiology",
+    "department": "Cardiology",
+    "specimen": "CT",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "ct angio heart",
+      "ct angiography coronary",
+      "ct coronary angiography",
+      "ctca"
+    ]
+  },
+  {
+    "test_name": "Carotid Doppler",
+    "category": "Radiology",
+    "department": "Neurology",
+    "specimen": "Ultrasound",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "carotid doppler",
+      "carotid duplex",
+      "neck vessel doppler"
+    ]
+  },
+  {
+    "test_name": "Venous Doppler Lower Limb",
+    "category": "Radiology",
+    "department": "Cardiology",
+    "specimen": "Ultrasound",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "dvt doppler",
+      "leg venous doppler",
+      "lower limb venous doppler",
+      "venous doppler",
+      "venous doppler lower limb"
+    ]
+  },
+  {
+    "test_name": "Arterial Doppler Lower Limb",
+    "category": "Radiology",
+    "department": "Cardiology",
+    "specimen": "Ultrasound",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "arterial doppler",
+      "arterial doppler lower limb",
+      "leg arterial doppler",
+      "lower limb arterial doppler"
+    ]
+  },
+  {
+    "test_name": "Lipoprotein(a)",
+    "category": "Biochemistry",
+    "department": "Cardiology",
+    "specimen": "Serum",
+    "turnaround_time": "1-2 Days",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "lipoprotein a",
+      "lipoprotein(a)",
+      "lp(a)",
+      "lpa"
+    ]
+  },
+  {
+    "test_name": "Homocysteine",
+    "category": "Biochemistry",
+    "department": "Cardiology",
+    "specimen": "Serum",
+    "turnaround_time": "1-2 Days",
+    "is_fasting_required": true,
+    "common_aliases": [
+      "homocysteine",
+      "serum homocysteine"
+    ]
+  },
+  {
+    "test_name": "EEG (Electroencephalogram)",
+    "category": "Diagnostics",
+    "department": "Neurology",
+    "specimen": "Non-invasive",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "brain wave test",
+      "dimag ki taranga jaanch",
+      "eeg",
+      "eeg (electroencephalogram)",
+      "electroencephalogram"
+    ]
+  },
+  {
+    "test_name": "NCV (Nerve Conduction Velocity)",
+    "category": "Diagnostics",
+    "department": "Neurology",
+    "specimen": "Non-invasive",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "nas ki jaanch",
+      "ncs",
+      "ncv",
+      "ncv (nerve conduction velocity)",
+      "nerve conduction study",
+      "nerve conduction velocity"
+    ]
+  },
+  {
+    "test_name": "EMG (Electromyography)",
+    "category": "Diagnostics",
+    "department": "Neurology",
+    "specimen": "Needle EMG",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "electromyography",
+      "emg",
+      "emg (electromyography)"
+    ]
+  },
+  {
+    "test_name": "VEP (Visual Evoked Potential)",
+    "category": "Diagnostics",
+    "department": "Neurology",
+    "specimen": "Non-invasive",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "vep",
+      "vep (visual evoked potential)",
+      "visual evoked potential"
+    ]
+  },
+  {
+    "test_name": "BERA (Brainstem Evoked Response Audiometry)",
+    "category": "Diagnostics",
+    "department": "ENT",
+    "specimen": "Non-invasive",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "baer",
+      "bera",
+      "bera (brainstem evoked response audiometry)",
+      "brainstem evoked response"
+    ]
+  },
+  {
+    "test_name": "MRI Brain with Contrast",
+    "category": "Radiology",
+    "department": "Neurology",
+    "specimen": "MRI",
+    "turnaround_time": "24 Hours",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "contrast mri brain",
+      "mri brain contrast",
+      "mri brain with contrast"
+    ]
+  },
+  {
+    "test_name": "MR Angiography Brain (MRA)",
+    "category": "Radiology",
+    "department": "Neurology",
+    "specimen": "MRI",
+    "turnaround_time": "24 Hours",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "mr angiography",
+      "mr angiography brain (mra)",
+      "mra",
+      "mra brain"
+    ]
+  },
+  {
+    "test_name": "MR Venography Brain (MRV)",
+    "category": "Radiology",
+    "department": "Neurology",
+    "specimen": "MRI",
+    "turnaround_time": "24 Hours",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "mr venography",
+      "mr venography brain (mrv)",
+      "mrv",
+      "mrv brain"
+    ]
+  },
+  {
+    "test_name": "CT Angiography Brain",
+    "category": "Radiology",
+    "department": "Neurology",
+    "specimen": "CT",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "ct angio brain",
+      "ct angiography brain",
+      "cta brain"
+    ]
+  },
+  {
+    "test_name": "CSF Analysis",
+    "category": "Clinical Pathology",
+    "department": "Neurology",
+    "specimen": "Cerebrospinal Fluid",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "csf analysis",
+      "csf routine",
+      "csf study",
+      "lumbar puncture"
+    ]
+  },
+  {
+    "test_name": "Serum Valproate Level",
+    "category": "Therapeutic Drug Monitoring",
+    "department": "Neurology",
+    "specimen": "Serum",
+    "turnaround_time": "1-2 Days",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "serum valproate",
+      "serum valproate level",
+      "valproate level",
+      "valproic acid level"
+    ]
+  },
+  {
+    "test_name": "Serum Phenytoin Level",
+    "category": "Therapeutic Drug Monitoring",
+    "department": "Neurology",
+    "specimen": "Serum",
+    "turnaround_time": "1-2 Days",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "eptoin level",
+      "phenytoin level",
+      "serum phenytoin",
+      "serum phenytoin level"
+    ]
+  },
+  {
+    "test_name": "X-Ray Knee (AP & Lateral)",
+    "category": "Radiology",
+    "department": "Orthopaedics",
+    "specimen": "Imaging",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "ghutne ka x ray",
+      "ghutne ka xray",
+      "knee x ray",
+      "x ray knee",
+      "x-ray knee",
+      "x-ray knee (ap & lateral)",
+      "xray knee"
+    ]
+  },
+  {
+    "test_name": "X-Ray Lumbosacral Spine (AP & Lateral)",
+    "category": "Radiology",
+    "department": "Orthopaedics",
+    "specimen": "Imaging",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "kamar ka x ray",
+      "ls spine x ray",
+      "x ray ls spine",
+      "x ray lumbar spine",
+      "x-ray ls spine",
+      "x-ray lumbosacral spine (ap & lateral)",
+      "xray ls spine"
+    ]
+  },
+  {
+    "test_name": "X-Ray Cervical Spine (AP & Lateral)",
+    "category": "Radiology",
+    "department": "Orthopaedics",
+    "specimen": "Imaging",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "cervical spine x ray",
+      "gardan ka x ray",
+      "x ray cervical spine",
+      "x-ray cervical spine",
+      "x-ray cervical spine (ap & lateral)",
+      "xray c spine"
+    ]
+  },
+  {
+    "test_name": "X-Ray Shoulder",
+    "category": "Radiology",
+    "department": "Orthopaedics",
+    "specimen": "Imaging",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "kandhe ka x ray",
+      "shoulder x ray",
+      "x ray shoulder",
+      "x-ray shoulder"
+    ]
+  },
+  {
+    "test_name": "X-Ray Pelvis with Both Hips",
+    "category": "Radiology",
+    "department": "Orthopaedics",
+    "specimen": "Imaging",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "hip x ray",
+      "pelvis with both hips",
+      "x ray hip",
+      "x ray pelvis",
+      "x-ray pelvis",
+      "x-ray pelvis with both hips"
+    ]
+  },
+  {
+    "test_name": "X-Ray Hand / Wrist",
+    "category": "Radiology",
+    "department": "Orthopaedics",
+    "specimen": "Imaging",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "haath ka x ray",
+      "kalai ka x ray",
+      "x ray hand",
+      "x ray wrist",
+      "x-ray hand / wrist",
+      "x-ray wrist"
+    ]
+  },
+  {
+    "test_name": "X-Ray Ankle / Foot",
+    "category": "Radiology",
+    "department": "Orthopaedics",
+    "specimen": "Imaging",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "pair ka x ray",
+      "takhne ka x ray",
+      "x ray ankle",
+      "x ray foot",
+      "x-ray ankle",
+      "x-ray ankle / foot"
+    ]
+  },
+  {
+    "test_name": "X-Ray Elbow",
+    "category": "Radiology",
+    "department": "Orthopaedics",
+    "specimen": "Imaging",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "kohni ka x ray",
+      "x ray elbow",
+      "x-ray elbow"
+    ]
+  },
+  {
+    "test_name": "X-Ray Dorsal Spine",
+    "category": "Radiology",
+    "department": "Orthopaedics",
+    "specimen": "Imaging",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "d spine x ray",
+      "x ray dorsal spine",
+      "x ray thoracic spine",
+      "x-ray dorsal spine"
+    ]
+  },
+  {
+    "test_name": "MRI Knee",
+    "category": "Radiology",
+    "department": "Orthopaedics",
+    "specimen": "MRI",
+    "turnaround_time": "24 Hours",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "ghutne ka mri",
+      "knee mri",
+      "mri knee"
+    ]
+  },
+  {
+    "test_name": "MRI Lumbosacral Spine",
+    "category": "Radiology",
+    "department": "Orthopaedics",
+    "specimen": "MRI",
+    "turnaround_time": "24 Hours",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "kamar ka mri",
+      "ls spine mri",
+      "mri ls spine",
+      "mri lumbar spine",
+      "mri lumbosacral spine"
+    ]
+  },
+  {
+    "test_name": "MRI Cervical Spine",
+    "category": "Radiology",
+    "department": "Orthopaedics",
+    "specimen": "MRI",
+    "turnaround_time": "24 Hours",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "cervical mri",
+      "gardan ka mri",
+      "mri c spine",
+      "mri cervical spine"
+    ]
+  },
+  {
+    "test_name": "MRI Shoulder",
+    "category": "Radiology",
+    "department": "Orthopaedics",
+    "specimen": "MRI",
+    "turnaround_time": "24 Hours",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "mri shoulder",
+      "shoulder mri"
+    ]
+  },
+  {
+    "test_name": "MRI Hip",
+    "category": "Radiology",
+    "department": "Orthopaedics",
+    "specimen": "MRI",
+    "turnaround_time": "24 Hours",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "hip mri",
+      "mri both hips",
+      "mri hip"
+    ]
+  },
+  {
+    "test_name": "CT Scan Spine",
+    "category": "Radiology",
+    "department": "Orthopaedics",
+    "specimen": "CT",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "ct scan spine",
+      "ct spine"
+    ]
+  },
+  {
+    "test_name": "DEXA Scan (Bone Density)",
+    "category": "Radiology",
+    "department": "Orthopaedics",
+    "specimen": "Imaging",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "bmd",
+      "bone density test",
+      "bone mineral density",
+      "dexa",
+      "dexa scan",
+      "dexa scan (bone density)",
+      "haddi ki taqat jaanch"
+    ]
+  },
+  {
+    "test_name": "RA Factor (Rheumatoid Factor)",
+    "category": "Serology",
+    "department": "Rheumatology",
+    "specimen": "Serum",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "ra factor",
+      "ra factor (rheumatoid factor)",
+      "ra test",
+      "rf test",
+      "rheumatoid factor"
+    ]
+  },
+  {
+    "test_name": "Anti-CCP Antibodies",
+    "category": "Serology",
+    "department": "Rheumatology",
+    "specimen": "Serum",
+    "turnaround_time": "1-2 Days",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "anti ccp",
+      "anti-ccp",
+      "anti-ccp antibodies",
+      "ccp antibody"
+    ]
+  },
+  {
+    "test_name": "HLA-B27",
+    "category": "Molecular",
+    "department": "Rheumatology",
+    "specimen": "EDTA Whole Blood",
+    "turnaround_time": "2-3 Days",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "hla b27",
+      "hla-b27"
+    ]
+  },
+  {
+    "test_name": "ASO Titre",
+    "category": "Serology",
+    "department": "Rheumatology",
+    "specimen": "Serum",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "antistreptolysin o",
+      "aso",
+      "aso titer",
+      "aso titre"
+    ]
+  },
+  {
+    "test_name": "ANA (Antinuclear Antibody)",
+    "category": "Serology",
+    "department": "Rheumatology",
+    "specimen": "Serum",
+    "turnaround_time": "1-2 Days",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "ana (antinuclear antibody)",
+      "ana ifa",
+      "ana profile",
+      "ana test",
+      "antinuclear antibody"
+    ]
+  },
+  {
+    "test_name": "Anti-dsDNA",
+    "category": "Serology",
+    "department": "Rheumatology",
+    "specimen": "Serum",
+    "turnaround_time": "2-3 Days",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "anti double stranded dna",
+      "anti dsdna",
+      "anti-dsdna",
+      "ds dna"
+    ]
+  },
+  {
+    "test_name": "Synovial Fluid Analysis",
+    "category": "Clinical Pathology",
+    "department": "Orthopaedics",
+    "specimen": "Synovial Fluid",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "joint fluid analysis",
+      "knee fluid test",
+      "synovial fluid analysis"
+    ]
+  },
+  {
+    "test_name": "Upper GI Endoscopy",
+    "category": "Procedure",
+    "department": "Gastroenterology",
+    "specimen": "Endoscopy",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": true,
+    "common_aliases": [
+      "endoscopy",
+      "ogd",
+      "ugi endoscopy",
+      "upper gi endoscopy"
+    ]
+  },
+  {
+    "test_name": "Colonoscopy",
+    "category": "Procedure",
+    "department": "Gastroenterology",
+    "specimen": "Endoscopy",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": true,
+    "common_aliases": [
+      "colonoscopy"
+    ]
+  },
+  {
+    "test_name": "H. pylori Test",
+    "category": "Serology",
+    "department": "Gastroenterology",
+    "specimen": "Stool / Serum / Breath",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "h pylori",
+      "h pylori antigen",
+      "h. pylori",
+      "h. pylori test",
+      "helicobacter pylori",
+      "urea breath test"
+    ]
+  },
+  {
+    "test_name": "Stool Culture",
+    "category": "Microbiology",
+    "department": "Gastroenterology",
+    "specimen": "Stool",
+    "turnaround_time": "48-72 Hours",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "stool c/s",
+      "stool culture"
+    ]
+  },
+  {
+    "test_name": "Stool for Ova & Cyst",
+    "category": "Clinical Pathology",
+    "department": "Gastroenterology",
+    "specimen": "Stool",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "pet ke keede test",
+      "stool for ova & cyst",
+      "stool for ova and cyst",
+      "stool o/c",
+      "stool ova cyst"
+    ]
+  },
+  {
+    "test_name": "Hepatitis A IgM (HAV)",
+    "category": "Serology",
+    "department": "Gastroenterology",
+    "specimen": "Serum",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "hav igm",
+      "hep a igm",
+      "hepatitis a",
+      "hepatitis a igm (hav)"
+    ]
+  },
+  {
+    "test_name": "Hepatitis E IgM (HEV)",
+    "category": "Serology",
+    "department": "Gastroenterology",
+    "specimen": "Serum",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "hep e igm",
+      "hepatitis e",
+      "hepatitis e igm (hev)",
+      "hev igm"
+    ]
+  },
+  {
+    "test_name": "Fibroscan (Liver Stiffness)",
+    "category": "Radiology",
+    "department": "Gastroenterology",
+    "specimen": "Ultrasound Elastography",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": true,
+    "common_aliases": [
+      "elastography liver",
+      "fibroscan",
+      "fibroscan (liver stiffness)",
+      "liver stiffness"
+    ]
+  },
+  {
+    "test_name": "CECT Abdomen",
+    "category": "Radiology",
+    "department": "Gastroenterology",
+    "specimen": "CT",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": true,
+    "common_aliases": [
+      "cect abdomen",
+      "contrast ct abdomen",
+      "ct abdomen",
+      "ct scan abdomen"
+    ]
+  },
+  {
+    "test_name": "MRCP",
+    "category": "Radiology",
+    "department": "Gastroenterology",
+    "specimen": "MRI",
+    "turnaround_time": "24 Hours",
+    "is_fasting_required": true,
+    "common_aliases": [
+      "mr cholangiopancreatography",
+      "mrcp"
+    ]
+  },
+  {
+    "test_name": "Pulmonary Function Test (PFT / Spirometry)",
+    "category": "Diagnostics",
+    "department": "Pulmonology",
+    "specimen": "Non-invasive",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "lung function test",
+      "pft",
+      "phephde ki jaanch",
+      "pulmonary function test",
+      "pulmonary function test (pft / spirometry)",
+      "spirometry"
+    ]
+  },
+  {
+    "test_name": "HRCT Chest",
+    "category": "Radiology",
+    "department": "Pulmonology",
+    "specimen": "CT",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "chest ct",
+      "ct chest",
+      "ct scan chest",
+      "hrct",
+      "hrct chest"
+    ]
+  },
+  {
+    "test_name": "CBNAAT / GeneXpert (TB)",
+    "category": "Molecular",
+    "department": "Pulmonology",
+    "specimen": "Sputum",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "cbnaat",
+      "cbnaat / genexpert (tb)",
+      "gene xpert",
+      "genexpert",
+      "tb pcr",
+      "trunat"
+    ]
+  },
+  {
+    "test_name": "IGRA / Quantiferon-TB Gold",
+    "category": "Serology",
+    "department": "Pulmonology",
+    "specimen": "Heparin Whole Blood",
+    "turnaround_time": "2-3 Days",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "igra",
+      "igra / quantiferon-tb gold",
+      "quantiferon",
+      "quantiferon tb gold",
+      "tb gold"
+    ]
+  },
+  {
+    "test_name": "Sputum Culture & Sensitivity",
+    "category": "Microbiology",
+    "department": "Pulmonology",
+    "specimen": "Sputum",
+    "turnaround_time": "48-72 Hours",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "sputum c/s",
+      "sputum culture",
+      "sputum culture & sensitivity"
+    ]
+  },
+  {
+    "test_name": "Pleural Fluid Analysis",
+    "category": "Clinical Pathology",
+    "department": "Pulmonology",
+    "specimen": "Pleural Fluid",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "pleural fluid analysis",
+      "pleural fluid routine",
+      "pleural tap"
+    ]
+  },
+  {
+    "test_name": "Serum IgE (Total)",
+    "category": "Immunology",
+    "department": "Pulmonology",
+    "specimen": "Serum",
+    "turnaround_time": "1-2 Days",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "allergy ige",
+      "ige",
+      "serum ige",
+      "serum ige (total)",
+      "total ige"
+    ]
+  },
+  {
+    "test_name": "Absolute Eosinophil Count (AEC)",
+    "category": "Hematology",
+    "department": "Pulmonology",
+    "specimen": "EDTA Whole Blood",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "absolute eosinophil count",
+      "absolute eosinophil count (aec)",
+      "aec",
+      "eosinophil count"
+    ]
+  },
+  {
+    "test_name": "USG KUB",
+    "category": "Radiology",
+    "department": "Nephrology & Urology",
+    "specimen": "Ultrasound",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "gurde ki sonography",
+      "kidney ultrasound",
+      "kub ultrasound",
+      "pathri ki sonography",
+      "usg kub"
+    ]
+  },
+  {
+    "test_name": "USG Prostate / PVR",
+    "category": "Radiology",
+    "department": "Nephrology & Urology",
+    "specimen": "Ultrasound",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "post void residual",
+      "prostate ultrasound",
+      "pvr",
+      "usg prostate",
+      "usg prostate / pvr"
+    ]
+  },
+  {
+    "test_name": "PSA (Prostate Specific Antigen)",
+    "category": "Tumor Markers",
+    "department": "Nephrology & Urology",
+    "specimen": "Serum",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "prostate specific antigen",
+      "psa",
+      "psa (prostate specific antigen)",
+      "total psa"
+    ]
+  },
+  {
+    "test_name": "Uroflowmetry",
+    "category": "Diagnostics",
+    "department": "Nephrology & Urology",
+    "specimen": "Non-invasive",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "urine flow test",
+      "uroflow",
+      "uroflowmetry"
+    ]
+  },
+  {
+    "test_name": "X-Ray KUB",
+    "category": "Radiology",
+    "department": "Nephrology & Urology",
+    "specimen": "Imaging",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "x ray kub",
+      "x-ray kub",
+      "xray kub"
+    ]
+  },
+  {
+    "test_name": "CT KUB (Non-Contrast)",
+    "category": "Radiology",
+    "department": "Nephrology & Urology",
+    "specimen": "CT",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "ct kub",
+      "ct kub (non-contrast)",
+      "ncct kub",
+      "stone protocol ct"
+    ]
+  },
+  {
+    "test_name": "Semen Analysis",
+    "category": "Clinical Pathology",
+    "department": "Nephrology & Urology",
+    "specimen": "Semen",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "semen analysis",
+      "semen test",
+      "sperm count"
+    ]
+  },
+  {
+    "test_name": "HIV I & II Antibody",
+    "category": "Serology",
+    "department": "Pre-operative",
+    "specimen": "Serum",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "hiv",
+      "hiv 1 2",
+      "hiv i & ii antibody",
+      "hiv i ii",
+      "hiv test"
+    ]
+  },
+  {
+    "test_name": "HBsAg (Hepatitis B Surface Antigen)",
+    "category": "Serology",
+    "department": "Pre-operative",
+    "specimen": "Serum",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "australia antigen",
+      "hbs ag",
+      "hbsag",
+      "hbsag (hepatitis b surface antigen)",
+      "hep b",
+      "hepatitis b"
+    ]
+  },
+  {
+    "test_name": "Anti-HCV Antibody",
+    "category": "Serology",
+    "department": "Pre-operative",
+    "specimen": "Serum",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "anti hcv",
+      "anti-hcv antibody",
+      "hcv",
+      "hep c",
+      "hepatitis c"
+    ]
+  },
+  {
+    "test_name": "VDRL / RPR",
+    "category": "Serology",
+    "department": "Pre-operative",
+    "specimen": "Serum",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "rpr",
+      "syphilis test",
+      "vdrl",
+      "vdrl / rpr"
+    ]
+  },
+  {
+    "test_name": "Typhidot (IgM)",
+    "category": "Serology",
+    "department": "Infectious Disease",
+    "specimen": "Serum",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "typhidot",
+      "typhidot (igm)",
+      "typhidot igm",
+      "typhoid igm"
+    ]
+  },
+  {
+    "test_name": "Blood Culture & Sensitivity",
+    "category": "Microbiology",
+    "department": "Infectious Disease",
+    "specimen": "Blood (culture bottle)",
+    "turnaround_time": "48-72 Hours",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "blood c/s",
+      "blood culture",
+      "blood culture & sensitivity",
+      "blood culture sensitivity"
+    ]
+  },
+  {
+    "test_name": "Scrub Typhus IgM",
+    "category": "Serology",
+    "department": "Infectious Disease",
+    "specimen": "Serum",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "scrub typhus",
+      "scrub typhus igm"
+    ]
+  },
+  {
+    "test_name": "Leptospira IgM",
+    "category": "Serology",
+    "department": "Infectious Disease",
+    "specimen": "Serum",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "lepto test",
+      "leptospira",
+      "leptospira igm"
+    ]
+  },
+  {
+    "test_name": "Chikungunya IgM",
+    "category": "Serology",
+    "department": "Infectious Disease",
+    "specimen": "Serum",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "chikungunya",
+      "chikungunya igm",
+      "chikungunya test"
+    ]
+  },
+  {
+    "test_name": "Peripheral Smear for Malaria Parasite",
+    "category": "Parasitology",
+    "department": "Infectious Disease",
+    "specimen": "EDTA Whole Blood",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "malaria smear",
+      "peripheral smear for malaria parasite",
+      "peripheral smear for mp",
+      "ps for mp",
+      "thick and thin smear"
+    ]
+  },
+  {
+    "test_name": "Procalcitonin",
+    "category": "Biochemistry",
+    "department": "Infectious Disease",
+    "specimen": "Serum",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "pct",
+      "procalcitonin"
+    ]
+  },
+  {
+    "test_name": "COVID-19 RT-PCR",
+    "category": "Molecular",
+    "department": "Infectious Disease",
+    "specimen": "Nasopharyngeal Swab",
+    "turnaround_time": "24 Hours",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "corona test",
+      "covid rt pcr",
+      "covid test",
+      "covid-19 rt-pcr",
+      "rt pcr"
+    ]
+  },
+  {
+    "test_name": "Throat Swab Culture",
+    "category": "Microbiology",
+    "department": "ENT",
+    "specimen": "Throat Swab",
+    "turnaround_time": "48 Hours",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "throat culture",
+      "throat swab",
+      "throat swab culture"
+    ]
+  },
+  {
+    "test_name": "Pus Culture & Sensitivity",
+    "category": "Microbiology",
+    "department": "General",
+    "specimen": "Pus Swab",
+    "turnaround_time": "48-72 Hours",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "pus c/s",
+      "pus culture",
+      "pus culture & sensitivity",
+      "wound culture"
+    ]
+  },
+  {
+    "test_name": "CEA (Carcinoembryonic Antigen)",
+    "category": "Tumor Markers",
+    "department": "Oncology",
+    "specimen": "Serum",
+    "turnaround_time": "1-2 Days",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "carcinoembryonic antigen",
+      "cea",
+      "cea (carcinoembryonic antigen)"
+    ]
+  },
+  {
+    "test_name": "CA-125",
+    "category": "Tumor Markers",
+    "department": "Obstetrics & Gynaecology",
+    "specimen": "Serum",
+    "turnaround_time": "1-2 Days",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "ca 125",
+      "ca-125",
+      "ca125"
+    ]
+  },
+  {
+    "test_name": "CA 19-9",
+    "category": "Tumor Markers",
+    "department": "Oncology",
+    "specimen": "Serum",
+    "turnaround_time": "1-2 Days",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "ca 19 9",
+      "ca 19-9",
+      "ca19-9"
+    ]
+  },
+  {
+    "test_name": "AFP (Alpha Fetoprotein)",
+    "category": "Tumor Markers",
+    "department": "Oncology",
+    "specimen": "Serum",
+    "turnaround_time": "1-2 Days",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "afp",
+      "afp (alpha fetoprotein)",
+      "alpha fetoprotein"
+    ]
+  },
+  {
+    "test_name": "FNAC",
+    "category": "Cytology",
+    "department": "Oncology",
+    "specimen": "Fine Needle Aspirate",
+    "turnaround_time": "2-3 Days",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "fine needle aspiration",
+      "fnac",
+      "gaanth ki jaanch"
+    ]
+  },
+  {
+    "test_name": "Biopsy / Histopathology",
+    "category": "Histopathology",
+    "department": "Oncology",
+    "specimen": "Tissue",
+    "turnaround_time": "3-5 Days",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "biopsy",
+      "biopsy / histopathology",
+      "histopathology",
+      "hpe",
+      "tissue biopsy"
+    ]
+  },
+  {
+    "test_name": "Pure Tone Audiometry (PTA)",
+    "category": "Diagnostics",
+    "department": "ENT",
+    "specimen": "Non-invasive",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "audiometry",
+      "hearing test",
+      "pta",
+      "pure tone audiometry",
+      "pure tone audiometry (pta)",
+      "sunne ki jaanch"
+    ]
+  },
+  {
+    "test_name": "Impedance Audiometry (Tympanometry)",
+    "category": "Diagnostics",
+    "department": "ENT",
+    "specimen": "Non-invasive",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "impedance audiometry",
+      "impedance audiometry (tympanometry)",
+      "impedance test",
+      "tympanometry"
+    ]
+  },
+  {
+    "test_name": "X-Ray PNS (Waters View)",
+    "category": "Radiology",
+    "department": "ENT",
+    "specimen": "Imaging",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "sinus x ray",
+      "waters view",
+      "x ray pns",
+      "x-ray pns",
+      "x-ray pns (waters view)",
+      "xray pns"
+    ]
+  },
+  {
+    "test_name": "CT PNS",
+    "category": "Radiology",
+    "department": "ENT",
+    "specimen": "CT",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "ct paranasal sinuses",
+      "ct pns",
+      "sinus ct"
+    ]
+  },
+  {
+    "test_name": "Diagnostic Nasal Endoscopy (DNE)",
+    "category": "Procedure",
+    "department": "ENT",
+    "specimen": "Endoscopy",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "diagnostic nasal endoscopy",
+      "diagnostic nasal endoscopy (dne)",
+      "dne",
+      "nasal endoscopy"
+    ]
+  },
+  {
+    "test_name": "X-Ray Soft Tissue Neck",
+    "category": "Radiology",
+    "department": "ENT",
+    "specimen": "Imaging",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "stn x ray",
+      "x ray soft tissue neck",
+      "x-ray soft tissue neck"
+    ]
+  },
+  {
+    "test_name": "KOH Mount",
+    "category": "Microbiology",
+    "department": "Dermatology",
+    "specimen": "Skin Scraping / Nail",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "fungal scraping test",
+      "koh",
+      "koh mount",
+      "koh test"
+    ]
+  },
+  {
+    "test_name": "Fungal Culture",
+    "category": "Microbiology",
+    "department": "Dermatology",
+    "specimen": "Skin / Nail / Hair",
+    "turnaround_time": "2-3 Weeks",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "fungal culture"
+    ]
+  },
+  {
+    "test_name": "Skin Biopsy",
+    "category": "Histopathology",
+    "department": "Dermatology",
+    "specimen": "Tissue",
+    "turnaround_time": "3-5 Days",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "punch biopsy",
+      "skin biopsy"
+    ]
+  },
+  {
+    "test_name": "Patch Test",
+    "category": "Diagnostics",
+    "department": "Dermatology",
+    "specimen": "Skin",
+    "turnaround_time": "48-72 Hours",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "allergy patch test",
+      "patch test"
+    ]
+  },
+  {
+    "test_name": "Tzanck Smear",
+    "category": "Cytology",
+    "department": "Dermatology",
+    "specimen": "Skin Scraping",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "tzanck smear",
+      "tzanck test"
+    ]
+  },
+  {
+    "test_name": "USG Neck / Thyroid",
+    "category": "Radiology",
+    "department": "Endocrinology & Diabetes",
+    "specimen": "Ultrasound",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "neck ultrasound",
+      "thyroid ultrasound",
+      "usg neck",
+      "usg neck / thyroid",
+      "usg thyroid"
+    ]
+  },
+  {
+    "test_name": "USG Scrotum",
+    "category": "Radiology",
+    "department": "Nephrology & Urology",
+    "specimen": "Ultrasound",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "scrotal ultrasound",
+      "testis ultrasound",
+      "usg scrotum"
+    ]
+  },
+  {
+    "test_name": "USG Soft Tissue / Local Part",
+    "category": "Radiology",
+    "department": "General",
+    "specimen": "Ultrasound",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "local ultrasound",
+      "usg local part",
+      "usg soft tissue",
+      "usg soft tissue / local part"
+    ]
+  },
+  {
+    "test_name": "X-Ray Abdomen (Erect)",
+    "category": "Radiology",
+    "department": "Gastroenterology",
+    "specimen": "Imaging",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "x ray abdomen",
+      "x ray abdomen standing",
+      "x-ray abdomen",
+      "x-ray abdomen (erect)",
+      "xray abdomen erect"
+    ]
+  },
+  {
+    "test_name": "CT Scan Chest with Contrast",
+    "category": "Radiology",
+    "department": "Pulmonology",
+    "specimen": "CT",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "cect chest",
+      "contrast ct chest",
+      "ct scan chest with contrast"
+    ]
+  },
+  {
+    "test_name": "Whole Body PET-CT",
+    "category": "Radiology",
+    "department": "Oncology",
+    "specimen": "PET-CT",
+    "turnaround_time": "1-2 Days",
+    "is_fasting_required": true,
+    "common_aliases": [
+      "pet ct",
+      "pet scan",
+      "whole body pet ct",
+      "whole body pet-ct"
+    ]
+  },
+  {
+    "test_name": "Pre-operative Profile",
+    "category": "Panel",
+    "department": "Pre-operative",
+    "specimen": "Blood + Urine",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "operation se pehle ki jaanch",
+      "pac investigations",
+      "pre op profile",
+      "pre operative profile",
+      "pre-operative profile",
+      "preop profile"
+    ]
+  },
+  {
+    "test_name": "Fever Profile",
+    "category": "Panel",
+    "department": "Infectious Disease",
+    "specimen": "Blood",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "bukhar ki jaanch",
+      "fever panel",
+      "fever profile"
+    ]
+  },
+  {
+    "test_name": "Diabetic Profile",
+    "category": "Panel",
+    "department": "Endocrinology & Diabetes",
+    "specimen": "Blood + Urine",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": true,
+    "common_aliases": [
+      "diabetes profile",
+      "diabetic profile",
+      "sugar profile"
+    ]
+  },
+  {
+    "test_name": "Arthritis Profile",
+    "category": "Panel",
+    "department": "Rheumatology",
+    "specimen": "Serum",
+    "turnaround_time": "1-2 Days",
+    "is_fasting_required": false,
+    "common_aliases": [
+      "arthritis profile",
+      "jodo ke dard ki jaanch",
+      "joint pain profile"
+    ]
+  },
+  {
+    "test_name": "Cardiac Risk Profile",
+    "category": "Panel",
+    "department": "Cardiology",
+    "specimen": "Serum",
+    "turnaround_time": "Same Day",
+    "is_fasting_required": true,
+    "common_aliases": [
+      "cardiac profile",
+      "cardiac risk profile",
+      "heart profile"
     ]
   }
 ]

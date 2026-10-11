@@ -220,9 +220,11 @@ class LabTestMatcher:
                 status="verified",
             )
 
-        # 2. Check substrings for compound spoken phrases
-        for alias, test_obj in self.alias_to_test.items():
-            if len(alias) >= 3 and alias in cleaned:
+        # 2. Compound phrases: the LONGEST alias contained as whole words wins, so
+        #    "x ray knee lateral" -> X-Ray Knee (not a shorter generic alias of another test).
+        for alias in sorted(self.alias_to_test, key=len, reverse=True):
+            test_obj = self.alias_to_test[alias]
+            if len(alias) >= 3 and re.search(r"\b" + re.escape(alias) + r"\b", cleaned):
                 return LabTestValidationResult(
                     raw_text=spoken_text,
                     matched_name=test_obj["test_name"],
