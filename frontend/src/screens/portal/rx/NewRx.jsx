@@ -424,6 +424,7 @@ export default function NewRx({ doctorId='dr001' }) {
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
   const [approvalResult, setApprovalResult] = useState(null) // { rx_token, approved_at } after End Consultation
+  const [approvalError, setApprovalError] = useState(null) // backend rejected the approve call (e.g. non-doctor role)
   const [markingForReview, setMarkingForReview] = useState(false)
   const [reviewToast, setReviewToast] = useState(false)
   const [showTestDrop, setShowTestDrop] = useState(false)
@@ -667,37 +668,29 @@ export default function NewRx({ doctorId='dr001' }) {
   async function handleEndConsultation() {
     if (!patient) { router.push('/portal/rx/history'); return }
     setSaving(true)
+    setApprovalError(null)
     const rx = buildRx(true)
     const s = savePrescription(rx)
 
-    // Call backend Approval Gate (Section 4.3)
-    let approvedToken = null
-    let approvedAt = null
+    // Call backend Approval Gate (Section 4.3). A failure here — including the
+    // backend's doctor-only check on /approve — must NOT finalize or navigate to
+    // the print view: an unapproved draft must never be treated as a signed Rx.
     try {
       await api.post('/prescriptions', s)
       const approvalRes = await api.post(`/prescriptions/${s.id}/approve`, {})
-      if (approvalRes?.rx_token) {
-        s.rx_token = approvalRes.rx_token
-        s.approved_at = approvalRes.approved_at
-        s.is_approved = true
-        approvedToken = approvalRes.rx_token
-        approvedAt = approvalRes.approved_at
-      }
-    } catch (err) {
-      console.warn('Backend approval gate fallback:', err)
-    }
+      s.rx_token = approvalRes.rx_token
+      s.approved_at = approvalRes.approved_at
+      s.is_approved = true
 
-    const final = finalizePrescription(s.id)
-    if (reviewContext) { resolveReview(reviewContext.id); setReviewContext(null) }
-    setPendingReviews(getPendingReviews())
-    setSaving(false)
-
-    // Show Approval Gate banner for 2s then navigate to parche/print view
-    if (approvedToken) {
-      setApprovalResult({ rx_token: approvedToken, approved_at: approvedAt, rxId: (final || s).id })
+      const final = finalizePrescription(s.id)
+      if (reviewContext) { resolveReview(reviewContext.id); setReviewContext(null) }
+      setPendingReviews(getPendingReviews())
+      setApprovalResult({ rx_token: approvalRes.rx_token, approved_at: approvalRes.approved_at, rxId: (final || s).id })
       setTimeout(() => router.push(`/portal/rx/${(final || s).id}`), 2200)
-    } else {
-      router.push(`/portal/rx/${(final || s).id}`)
+    } catch (err) {
+      setApprovalError(err?.detail || err?.message || 'Approval failed. The prescription was NOT finalized — please ask a doctor to approve it.')
+    } finally {
+      setSaving(false)
     }
   }
 
@@ -1293,6 +1286,44 @@ export default function NewRx({ doctorId='dr001' }) {
                 cursor: 'pointer', fontFamily: 'inherit'
               }}>
               View & Print Prescription →
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* ══ APPROVAL FAILED — prescription NOT finalized ══ */}
+      {approvalError && (
+        <div style={{
+          position: 'fixed', inset: 0, background: 'rgba(15,35,66,.65)', backdropFilter: 'blur(3px)',
+          zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20
+        }}>
+          <div style={{
+            background: '#fff', borderRadius: 16, maxWidth: 440, width: '100%',
+            padding: 28, textAlign: 'center', boxShadow: '0 20px 60px rgba(15,35,66,.25)',
+            border: '1.5px solid #FECACA',
+          }}>
+            <div style={{
+              width: 56, height: 56, borderRadius: '50%', background: '#FEE2E2',
+              color: '#DC2626', display: 'flex', alignItems: 'center', justifyContent: 'center',
+              margin: '0 auto 16px', border: '2px solid #FCA5A5'
+            }}>
+              <AlertTriangle size={32} />
+            </div>
+            <div style={{ fontSize: 18, fontWeight: 800, color: '#0F2342', marginBottom: 6 }}>
+              Approval Gate Blocked
+            </div>
+            <p style={{ fontSize: 13, color: '#6B7A9A', margin: '0 0 20px', lineHeight: 1.5 }}>
+              {approvalError}
+            </p>
+            <button
+              type="button"
+              onClick={() => setApprovalError(null)}
+              style={{
+                width: '100%', background: '#0F2342', color: '#fff', border: 'none',
+                borderRadius: 12, padding: '11px 0', fontSize: 14, fontWeight: 700,
+                cursor: 'pointer', fontFamily: 'inherit'
+              }}>
+              OK
             </button>
           </div>
         </div>
