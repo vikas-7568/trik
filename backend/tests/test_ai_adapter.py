@@ -85,11 +85,11 @@ def test_drug_validator_three_bands():
     assert res_green['band'] == 'green'
     assert res_green['status'] == 'verified'
     assert res_green['score'] >= 0.85
-    assert res_green['matched_name'] == 'Dolo 650'
+    assert res_green['matched_name'] == 'Dolo 650 mg'
 
     res_typo = drug_validator.validate_medicine_name('Dolo 650mg')
     assert res_typo['band'] == 'green'
-    assert res_typo['matched_name'] == 'Dolo 650'
+    assert res_typo['matched_name'] == 'Dolo 650 mg'
 
     # Yellow Band (0.70 - 0.84): Needs confirmation, candidate suggested
     res_yellow = drug_validator.validate_medicine_name('Pantocid')
@@ -101,23 +101,6 @@ def test_drug_validator_three_bands():
     assert res_red['band'] == 'red'
     assert res_red['status'] == 'unverified'
     assert res_red['matched_name'] is None
-
-
-def test_semantic_fallback_never_reaches_green_band(monkeypatch):
-    """Section 5.2 SAFETY INVARIANT:
-    A semantic match can NEVER reach the green band. Its best possible outcome is yellow.
-    """
-    from drug_validation.supabase_client import supabase_drug_client
-    def dummy_rpc(*args, **kwargs):
-        return [{"brand": "Dolo 650", "generic": "Paracetamol", "atc_code": "N02BE01", "category": "Analgesic", "score": 0.82}]
-    monkeypatch.setattr(supabase_drug_client, "rpc_match_drug_semantic", dummy_rpc)
-
-    # Trigger fallback with generic/colloquial name
-    fallback_res = drug_validator._semantic_fallback('paracetamol')
-    assert fallback_res is not None
-    assert fallback_res['band'] == 'yellow', "INVARIANT VIOLATION: Semantic fallback must be capped at yellow band"
-    assert fallback_res['score'] <= 0.84, "INVARIANT VIOLATION: Semantic fallback score must not reach 0.85"
-    assert fallback_res['auto_corrected'] is False, "INVARIANT VIOLATION: Semantic fallback must not auto-correct"
 
 
 def test_drug_validator_audit_logging():

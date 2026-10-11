@@ -10,6 +10,7 @@ load_dotenv(Path(__file__).with_name(".env"))
 
 from app.api.routes import (
     ai,
+    drugs,
     analytics,
     appointments,
     auth,
@@ -37,6 +38,7 @@ configure_cors(app)
 for router in (
     health.router,
     ai.router,
+    drugs.router,
     auth.router,
     public.router,
     staff.router,

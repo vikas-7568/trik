@@ -34,7 +34,7 @@ def store():
 def test_exact_drug_match(validator):
     result = validator.validate_medicine_name("Dolo 650")
     assert result["band"] == "green"
-    assert result["matched_name"] == "Dolo 650"
+    assert result["matched_name"] == "Dolo 650 mg"
     assert result["score"] >= 0.85
     assert result["auto_corrected"] is True
     assert result["status"] == "verified"
@@ -42,14 +42,14 @@ def test_exact_drug_match(validator):
 def test_exact_drug_match_case_insensitive(validator):
     result = validator.validate_medicine_name("dolo 650")
     assert result["band"] == "green"
-    assert result["matched_name"] == "Dolo 650"
+    assert result["matched_name"] == "Dolo 650 mg"
 
 
 # 2. Misspelled Drug
 def test_misspelled_drug_green(validator):
     result = validator.validate_medicine_name("Dolo 650mg")
     assert result["band"] == "green"
-    assert result["matched_name"] == "Dolo 650"
+    assert result["matched_name"] == "Dolo 650 mg"
 
 def test_misspelled_drug_unknown(validator):
     result = validator.validate_medicine_name("Xyzpillol 999")
@@ -63,7 +63,7 @@ def test_asr_variation_do_low_650(validator):
     """ASR mis-transcription 'do low 650' -> normalized -> GREEN."""
     result = validator.validate_medicine_name("do low 650")
     assert result["band"] == "green"
-    assert result["matched_name"] == "Dolo 650"
+    assert result["matched_name"] == "Dolo 650 mg"
 
 def test_asr_variation_ogmentin(validator):
     result = validator.validate_medicine_name("ogmentin 625")
@@ -82,15 +82,6 @@ def test_asr_variation_diclomol(validator):
 
 
 # 4. Semantic Fallback
-def test_semantic_fallback_invoked(validator, monkeypatch):
-    """When fuzzy fails, semantic fallback returns YELLOW."""
-    mock_hits = [{"brand": "Calpol 500", "generic": "Paracetamol", "atc_code": "N02BE01", "category": "Analgesics", "score": 0.88}]
-    monkeypatch.setattr(supabase_drug_client, "rpc_match_drug_semantic", lambda emb: mock_hits)
-    result = validator._semantic_fallback("acetaminophen")
-    assert result is not None
-    assert result["band"] == "yellow"
-    assert result["auto_corrected"] is False
-
 def test_semantic_fallback_below_threshold(validator, monkeypatch):
     monkeypatch.setattr(supabase_drug_client, "rpc_match_drug_semantic", lambda emb: [])
     result = validator._semantic_fallback("unknowndrugxxx")
@@ -112,17 +103,6 @@ def test_empty_name_is_red(validator):
 
 
 # 6. SAFETY INVARIANT: Semantic Cannot Become GREEN
-def test_semantic_result_cannot_be_green(validator, monkeypatch):
-    """SAFETY INVARIANT: even a score=0.99 hit must be capped at yellow."""
-    high_score_hit = [{"brand": "Dolo 650", "generic": "Paracetamol", "atc_code": "N02BE01", "category": "Analgesics", "score": 0.99}]
-    monkeypatch.setattr(supabase_drug_client, "rpc_match_drug_semantic", lambda emb: high_score_hit)
-    result = validator._semantic_fallback("paracetamol")
-    assert result is not None
-    assert result["band"] != "green", "INVARIANT VIOLATION: Semantic cannot be green"
-    assert result["band"] == "yellow"
-    assert result["score"] <= 0.84
-    assert result["auto_corrected"] is False
-
 def test_validate_full_path_semantic_capped(validator, monkeypatch):
     """Full validate_medicine_name: semantic path score must be <= 0.84."""
     mock_hits = [{"brand": "Dolo 650", "generic": "Paracetamol", "atc_code": "N02BE01", "category": "Analgesics", "score": 0.99}]

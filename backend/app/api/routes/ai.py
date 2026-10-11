@@ -58,7 +58,7 @@ class StructureRequest(BaseModel):
 
 def _build_system_prompt() -> str:
     """Build a grounded system prompt with Hinglish clinical rules and WHO ATC drug list."""
-    drug_context = drug_validator.get_drug_context_for_prompt()
+    # No drug list in the prompt: the model extracts what was spoken; CDCI validation decides.
     return f"""You are a clinical AI prescription structuring assistant for Indian clinics.
 You convert doctor audio dictations (which frequently code-switch between Hindi, English, and Hinglish) into clean, standard structured JSON prescriptions.
 
@@ -92,9 +92,7 @@ HINGLISH & CLINICAL COMPREHENSION RULES:
    - NEVER invent, infer, substitute, or normalize a medicine/test into a different entity. Preserve uncertain terms verbatim in spoken_name.
    - Never invent a dose, frequency, duration, diagnosis, test, advice, or follow-up. Use null/empty arrays when absent.
    - Medicines must include the exact spoken_name.
-
-APPROVED DRUG REFERENCE LIST (WHO ATC Grounded):
-{drug_context}"""
+"""
 
 
 @router.post("/transcribe")
@@ -183,7 +181,12 @@ def structure_prescription(payload: StructureRequest) -> dict[str, Any]:
             "validation_score": val["score"],
             "validation_band": val["band"],      # "green", "yellow", "red"
             "validation_status": val["status"],  # "verified", "needs_confirmation", "unverified"
-            "auto_corrected": val["auto_corrected"]
+            "auto_corrected": val["auto_corrected"],
+            "validation_reason": val.get("reason"),     # why green/yellow/red, for the UI
+            "candidates": val.get("candidates", []),     # similar brand names (never pre-selected)
+            "options": val.get("options", []),           # strengths/forms for the doctor to pick
+            "form": val.get("form"),
+            "cdci_code": val.get("cdci_code"),
 
         }
 
