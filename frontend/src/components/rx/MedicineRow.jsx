@@ -28,7 +28,7 @@ function FieldSelect({ label, value, options, onChange }) {
           onChange(e.target.value)
         }}
         style={{ width:'100%', border:`1px solid ${C.border}`, borderRadius:6, padding:'6px 8px', fontSize:13, color:C.text, background:'#fff', outline:'none', cursor:'pointer', fontFamily:'inherit' }}>
-        <option value="" disabled>—</option>
+        <option value="" disabled>Not stated</option>
         {options.map(o => <option key={o} value={o}>{o}</option>)}
         {isCustom && <option value="custom">{value}</option>}
       </select>
@@ -78,6 +78,7 @@ export default function MedicineRow({ medicine, doctorId='dr001', onChange, onRe
                   brandName: medicine.matched_name || medicine.brandName,
                   validation_band: 'green',
                   validation_status: 'verified',
+                  doctor_confirmed: true,
                 })}
                 style={{
                   background: '#D97706', color: '#fff', border: 'none', borderRadius: 4,
@@ -88,9 +89,24 @@ export default function MedicineRow({ medicine, doctorId='dr001', onChange, onRe
             </span>
           )}
           {medicine.validation_band === 'red' && (
-            <span style={{ fontSize:10, background:'#FEE2E2', color:'#991B1B', border:'1px solid #FECACA', padding:'2px 8px', borderRadius:6, marginLeft:6, fontWeight:600 }}>
-              ⚠ Unverified (Manual review)
-            </span>
+            medicine.doctor_confirmed ? (
+              <span style={{ fontSize:10, background:'#FEE2E2', color:'#991B1B', border:'1px solid #FECACA', padding:'2px 8px', borderRadius:6, marginLeft:6, fontWeight:600 }}>
+                ⚠ Unverified — confirmed as typed by doctor
+              </span>
+            ) : (
+              <span style={{ fontSize:11, background:'#FEE2E2', color:'#991B1B', border:'1px solid #FECACA', padding:'2px 8px', borderRadius:6, marginLeft:6, fontWeight:600, display:'inline-flex', alignItems:'center', gap:5 }}>
+                <span>⚠ Unverified</span>
+                <button
+                  type="button"
+                  onClick={() => onChange({ ...medicine, doctor_confirmed: true })}
+                  style={{
+                    background: '#991B1B', color: '#fff', border: 'none', borderRadius: 4,
+                    padding: '1px 6px', fontSize: 10, fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit'
+                  }}>
+                  Confirm as typed ✓
+                </button>
+              </span>
+            )
           )}
         </div>
         <button onClick={handleFav} title={fav?'Remove fav':'Add fav'}

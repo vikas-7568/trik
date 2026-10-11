@@ -25,6 +25,9 @@ export default function RxPrintLayout({ rx, clinic, doctor, autoPrint = false })
 
   if (!rx) return null
 
+  // Safety rule 2: a draft must never be mistaken for a signed Rx, wherever it's opened from.
+  const isApproved = Boolean(rx.is_approved)
+
   const doc = doctor || clinic?.doctors?.find(d => d.isPrimary) || clinic?.doctors?.[0] || {}
   const rxDate = rx.date ? new Date(rx.date) : new Date()
   const followDate = rx.followUpDate ? new Date(rx.followUpDate) : null
@@ -57,8 +60,27 @@ export default function RxPrintLayout({ rx, clinic, doctor, autoPrint = false })
           boxShadow: '0 2px 16px rgba(15,35,66,.12)',
           borderRadius: 8,
           overflow: 'hidden',
+          position: 'relative',
         }}
       >
+        {/* Draft watermark — a draft must never read as a signed prescription,
+            no matter how this screen was opened (direct link, history, etc.) */}
+        {!isApproved && (
+          <div style={{
+            position: 'absolute', inset: 0, zIndex: 50,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            pointerEvents: 'none', overflow: 'hidden',
+          }}>
+            <span style={{
+              fontSize: 42, fontWeight: 800, color: 'rgba(220,38,38,0.22)',
+              transform: 'rotate(-28deg)', whiteSpace: 'nowrap', letterSpacing: '.05em',
+              textTransform: 'uppercase', userSelect: 'none',
+            }}>
+              DRAFT — NOT APPROVED
+            </span>
+          </div>
+        )}
+
         {/* Navy header */}
         <div style={{ background: P.navy, padding: '13px 16px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
           <div style={{ display: 'flex', alignItems: 'flex-start', gap: 10 }}>
@@ -87,7 +109,9 @@ export default function RxPrintLayout({ rx, clinic, doctor, autoPrint = false })
           <div style={{ display: 'flex', gap: 14 }}>
             <span><b style={{ color: P.muted }}>Rx No:</b> {rx.rxNumber || rx.rx_number || '—'}</span>
             <span><b style={{ color: P.muted }}>Token:</b> {rxToken}</span>
-            <span><b style={{ color: P.muted }}>Status:</b> <span style={{ color: P.green, fontWeight: 700 }}>Approved ✓</span></span>
+            <span><b style={{ color: P.muted }}>Status:</b> {isApproved
+              ? <span style={{ color: P.green, fontWeight: 700 }}>Approved ✓</span>
+              : <span style={{ color: P.coral, fontWeight: 700 }}>Draft — Not Approved</span>}</span>
           </div>
           <div style={{ display: 'flex', gap: 14 }}>
             <span><b style={{ color: P.muted }}>Date:</b> {rxDate.toLocaleDateString('en-IN')}</span>
@@ -222,9 +246,9 @@ export default function RxPrintLayout({ rx, clinic, doctor, autoPrint = false })
             )}
             <div style={{ borderTop: `1.5px solid ${P.navy}`, paddingTop: 2, fontSize: 10, fontWeight: 700 }}>{doc.name || 'Treating Doctor'}</div>
             {doc.registrationNumber && <div style={{ fontSize: 9, color: P.muted }}>Reg: {doc.registrationNumber}</div>}
-            {(rx.approved_at || rx.finalizedAt) && (
+            {isApproved && rx.approved_at && (
               <div style={{ fontSize: 8, color: P.muted, marginTop: 1 }}>
-                Approved: {new Date(rx.approved_at || rx.finalizedAt).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })}
+                Approved: {new Date(rx.approved_at).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })}
               </div>
             )}
           </div>

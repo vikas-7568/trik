@@ -2,7 +2,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { Search, Plus, X, Clock, User, AlertTriangle, CheckCircle, Printer, MessageCircle, Mic, ChevronDown, Bookmark, ArrowLeft } from 'lucide-react'
-import { initDemoDataIfNeeded, getClinicConfig, getPatient, searchPatients, savePatient, savePrescription, finalizePrescription, saveCustomMedicine, getPatientPrescriptions, getQueueEntry, advanceQueue, getPendingReviews, resolveReview, getSlotsState, getNextWaiting, updateAppointmentStatus, markAsAwaitingReports } from '../../../../lib/rxStorage'
+import { initDemoDataIfNeeded, getClinicConfig, getPatient, searchPatients, savePatient, savePrescription, finalizePrescription, saveCustomMedicine, getPatientPrescriptions, getPrescription, getQueueEntry, advanceQueue, getPendingReviews, resolveReview, getSlotsState, getNextWaiting, updateAppointmentStatus, markAsAwaitingReports } from '../../../../lib/rxStorage'
 import { addReviewEntry } from '../../../../lib/reviews'
 import { getCabinSettings, persistActiveSlot } from '../../../../lib/cabinSettings'
 import { buildWhatsAppMessage } from '../../../../lib/whatsappMessage'
@@ -427,6 +427,8 @@ export default function NewRx({ doctorId='dr001' }) {
   const [saved, setSaved] = useState(false)
   const [approvalResult, setApprovalResult] = useState(null) // { rx_token, approved_at } after End Consultation
   const [approvalError, setApprovalError] = useState(null) // backend rejected the approve call (e.g. non-doctor role)
+  const [isApproved, setIsApproved] = useState(false) // true only after THIS session's approve call succeeded
+  const [approvedRxId, setApprovedRxId] = useState(null) // the record Print/WhatsApp operate on once approved
   const [markingForReview, setMarkingForReview] = useState(false)
   const [reviewToast, setReviewToast] = useState(false)
   const [showTestDrop, setShowTestDrop] = useState(false)
@@ -467,9 +469,15 @@ export default function NewRx({ doctorId='dr001' }) {
     setShowReviews(false); setPatient(pt); resetForm(); setReviewContext(review)
   }
 
+  function toggleInstrTag(tag) {
+    setInstructionTags(prev => prev.includes(tag) ? prev.filter(t => t !== tag) : [...prev, tag])
+  }
+
   function resetForm() {
     setVitals({}); setSymptoms([]); setSymptomText(''); setDiagnosis([])
     setMedicines([]); setTests([]); setInstructionTags([]); setInstructionFreeText(''); setFollowUp(''); setDoctorNote('')
+    setAiExtractionWarnings([]); setAiTranscript('')
+    setIsApproved(false); setApprovedRxId(null); setApprovalResult(null); setApprovalError(null)
     startTime.current = Date.now()
   }
 
@@ -644,17 +652,23 @@ export default function NewRx({ doctorId='dr001' }) {
     return s
   }
 
-  async function handlePrint() { const rx=await saveDraft(); if(!rx)return; router.push(`/portal/rx/${rx.id}?print=1`) }
+  function handlePrint() {
+    // Safety rule 2: print must never be reachable for an unapproved draft. The
+    // button is disabled until isApproved, but guard here too in case of a stale click.
+    if (!isApproved || !approvedRxId) return
+    router.push(`/portal/rx/${approvedRxId}?print=1`)
+  }
 
-  async function handleWhatsApp() {
-    const rx = await saveDraft()
+  function handleWhatsApp() {
+    if (!isApproved || !approvedRxId) return
+    const rx = getPrescription(approvedRxId)
     if (!rx) return
     const phone = patient?.phone?.replace(/\D/g,'')
     if (phone) {
       const msg = buildWhatsAppMessage(rx, clinic)
       window.open(`https://wa.me/91${phone}?text=${encodeURIComponent(msg)}`, '_blank')
     }
-    router.push(`/portal/rx/${rx.id}`)
+    router.push(`/portal/rx/${approvedRxId}`)
   }
 
   async function handleNextPatient() {
@@ -666,11 +680,14 @@ export default function NewRx({ doctorId='dr001' }) {
     setQueueEntry(q); setPatient(pt); setVitals(q.staffVitals||{}); setStaffVitalsTime(q.staffVitalsTime||null)
     setSymptoms([]); setSymptomText(''); setDiagnosis([]); setMedicines([]); setTests([])
     setInstructionTags([]); setInstructionFreeText(''); setFollowUp(''); setDoctorNote('')
+    setAiExtractionWarnings([]); setAiTranscript('')
+    setIsApproved(false); setApprovedRxId(null); setApprovalResult(null); setApprovalError(null)
     startTime.current=Date.now()
   }
 
   async function handleEndConsultation() {
     if (!patient) { router.push('/portal/rx/history'); return }
+    if (hasUnresolvedMedicine) return // button is disabled for this; guard in case of a stale click
     setSaving(true)
     setApprovalError(null)
     const rx = buildRx(true)
@@ -682,15 +699,20 @@ export default function NewRx({ doctorId='dr001' }) {
     try {
       await api.post('/prescriptions', s)
       const approvalRes = await api.post(`/prescriptions/${s.id}/approve`, {})
-      s.rx_token = approvalRes.rx_token
-      s.approved_at = approvalRes.approved_at
-      s.is_approved = true
-
-      const final = finalizePrescription(s.id)
+      // Persist the approval fields locally too — without this, the rx reloaded by
+      // RxView (e.g. via Print) would show as finalized but NOT approved.
+      const approved = savePrescription({
+        ...s,
+        rx_token: approvalRes.rx_token,
+        approved_at: approvalRes.approved_at,
+        is_approved: true,
+      })
+      const final = finalizePrescription(approved.id)
       if (reviewContext) { resolveReview(reviewContext.id); setReviewContext(null) }
       setPendingReviews(getPendingReviews())
-      setApprovalResult({ rx_token: approvalRes.rx_token, approved_at: approvalRes.approved_at, rxId: (final || s).id })
-      setTimeout(() => router.push(`/portal/rx/${(final || s).id}`), 2200)
+      setIsApproved(true)
+      setApprovedRxId((final || approved).id)
+      setApprovalResult({ rx_token: approvalRes.rx_token, approved_at: approvalRes.approved_at, rxId: (final || approved).id })
     } catch (err) {
       setApprovalError(err?.detail || err?.message || 'Approval failed. The prescription was NOT finalized — please ask a doctor to approve it.')
     } finally {
@@ -732,6 +754,11 @@ export default function NewRx({ doctorId='dr001' }) {
 
   const whatsappEnabled = clinic?.share?.whatsapp !== false
   const medNames = medicines.map(m=>m.brandName)
+  // Approval gate: a yellow/red medicine the doctor hasn't confirmed, or a missing
+  // dosage/duration, blocks Approve & Finalize. Green (or no band — manually typed) is fine.
+  const hasUnresolvedMedicine = medicines.some(m =>
+    (['yellow', 'red'].includes(m.validation_band) && !m.doctor_confirmed) || !m.dosage || !m.duration
+  )
   const lastVisitVitals = pastVisits[0]?.vitals || null
 
   // chronic pill colors
@@ -795,9 +822,10 @@ export default function NewRx({ doctorId='dr001' }) {
               if (text && !symptomText) setSymptomText(text)
             }}
           />
-          <button onClick={handleEndConsultation} disabled={saving}
-            style={{ padding:'8px 18px', background:saving?C.muted:C.text, color:'#fff', border:'none', borderRadius:12, cursor:saving?'not-allowed':'pointer', fontSize:13, fontWeight:600, flexShrink:0, whiteSpace:'nowrap' }}>
-            End consultation
+          <button onClick={handleEndConsultation} disabled={saving || hasUnresolvedMedicine}
+            title={hasUnresolvedMedicine ? 'Confirm every yellow/red medicine and fill dosage + duration first' : undefined}
+            style={{ padding:'8px 18px', background:(saving||hasUnresolvedMedicine)?C.muted:C.text, color:'#fff', border:'none', borderRadius:12, cursor:(saving||hasUnresolvedMedicine)?'not-allowed':'pointer', fontSize:13, fontWeight:600, flexShrink:0, whiteSpace:'nowrap' }}>
+            {isApproved ? 'Approved ✓' : 'Approve & Finalize'}
           </button>
         </div>
 
@@ -1235,19 +1263,22 @@ export default function NewRx({ doctorId='dr001' }) {
               style={{ padding:'8px 18px', border:`1px solid ${C.border}`, borderRadius:7, background:'#fff', cursor:saving?'not-allowed':'pointer', fontSize:13, fontWeight:600, color:C.text }}>
               {saving?'Saving…':'Save draft'}
             </button>
-            <button onClick={handlePrint}
-              style={{ display:'flex', alignItems:'center', gap:5, padding:'8px 18px', border:`1px solid ${C.border}`, borderRadius:7, background:'#fff', color:C.text, cursor:'pointer', fontSize:13, fontWeight:600 }}>
+            <button onClick={handlePrint} disabled={!isApproved}
+              title={!isApproved ? 'Approve the prescription first' : undefined}
+              style={{ display:'flex', alignItems:'center', gap:5, padding:'8px 18px', border:`1px solid ${C.border}`, borderRadius:7, background: isApproved ? '#fff' : C.surface, color: isApproved ? C.text : C.muted, cursor: isApproved ? 'pointer' : 'not-allowed', fontSize:13, fontWeight:600, opacity: isApproved ? 1 : 0.6 }}>
               <Printer size={13}/>Print
             </button>
             {whatsappEnabled ? (
-              <button onClick={handleWhatsApp}
-                style={{ display:'flex', alignItems:'center', gap:6, padding:'8px 22px', border:'none', borderRadius:7, background:'#25D366', color:'#fff', cursor:'pointer', fontSize:13, fontWeight:700 }}>
-                <MessageCircle size={13}/>WhatsApp & Save
+              <button onClick={handleWhatsApp} disabled={!isApproved}
+                title={!isApproved ? 'Approve the prescription first' : undefined}
+                style={{ display:'flex', alignItems:'center', gap:6, padding:'8px 22px', border:'none', borderRadius:7, background: isApproved ? '#25D366' : C.muted, color:'#fff', cursor: isApproved ? 'pointer' : 'not-allowed', fontSize:13, fontWeight:700, opacity: isApproved ? 1 : 0.6 }}>
+                <MessageCircle size={13}/>{isApproved ? 'WhatsApp & Save' : 'Approve first to send'}
               </button>
             ) : (
-              <button onClick={handleEndConsultation} disabled={saving}
-                style={{ display:'flex', alignItems:'center', gap:6, padding:'8px 22px', border:'none', borderRadius:7, background:C.coral, color:'#fff', cursor:'pointer', fontSize:13, fontWeight:700 }}>
-                <CheckCircle size={13}/>Save & Finalize
+              <button onClick={handleEndConsultation} disabled={saving || hasUnresolvedMedicine}
+                title={hasUnresolvedMedicine ? 'Confirm every yellow/red medicine and fill dosage + duration first' : undefined}
+                style={{ display:'flex', alignItems:'center', gap:6, padding:'8px 22px', border:'none', borderRadius:7, background:(saving||hasUnresolvedMedicine)?C.muted:C.coral, color:'#fff', cursor:(saving||hasUnresolvedMedicine)?'not-allowed':'pointer', fontSize:13, fontWeight:700 }}>
+                <CheckCircle size={13}/>{isApproved ? 'Approved ✓' : 'Approve & Finalize'}
               </button>
             )}
           </div>
@@ -1310,6 +1341,16 @@ export default function NewRx({ doctorId='dr001' }) {
                 cursor: 'pointer', fontFamily: 'inherit'
               }}>
               View & Print Prescription →
+            </button>
+            <button
+              type="button"
+              onClick={() => setApprovalResult(null)}
+              style={{
+                width: '100%', background: 'none', color: '#6B7A9A', border: 'none',
+                borderRadius: 12, padding: '8px 0', fontSize: 13, fontWeight: 600,
+                cursor: 'pointer', fontFamily: 'inherit', marginTop: 4
+              }}>
+              Stay here — Print / WhatsApp from this screen
             </button>
           </div>
         </div>
