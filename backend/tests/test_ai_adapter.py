@@ -8,8 +8,6 @@ from pydantic import BaseModel
 
 from app.ai.adapter import (
     DeIdentifier,
-    LocalStubLLMClient,
-    LocalStubSpeechClient,
     Transcript,
     get_llm_client,
     get_speech_client,
@@ -17,6 +15,7 @@ from app.ai.adapter import (
 from app.services.drug_validator import drug_validator
 from app.storage.supabase_store import SupabaseStore
 from app.api.routes import ai, prescriptions
+from tests.fakes import LocalStubLLMClient, LocalStubSpeechClient
 
 
 class DummyPrescription(BaseModel):
@@ -211,3 +210,71 @@ def test_structural_no_direct_provider_imports():
             pass
             
     assert not violations, f'Found direct provider imports outside adapter: {violations}'
+
+
+# ── Fix Guide Fix 2: no fabricating fallback ──────────────────────────────────
+
+def test_structure_prescription_503_when_key_missing(monkeypatch):
+    """A missing/unconfigured LLM key must return an honest 503, never the stub's
+    fabricated prescription. Forces the env regardless of local .env contents."""
+    from fastapi.testclient import TestClient
+    from main import app
+
+    monkeypatch.setenv("AI_LLM_PROVIDER", "openai")
+    monkeypatch.delenv("OPENAI_API_KEY", raising=False)
+    monkeypatch.delenv("GEMINI_API_KEY", raising=False)
+
+    client = TestClient(app)
+    login = client.post(
+        "/auth/login",
+        json={"email": "demo@trikmed.com", "password": "demo1234", "role": "clinic"},
+    )
+    assert login.status_code == 200, login.text
+    token = login.json()["token"]
+
+    res = client.post(
+        "/ai/structure-prescription",
+        json={"transcript": "Dolo 650 din mein do baar"},
+        headers={"Authorization": f"Bearer {token}"},
+    )
+    assert res.status_code == 503, res.text
+    body = res.json()
+    assert "manually" in body["detail"].lower()
+    # The stub's tell-tale fabricated fields must never appear in an error response.
+    assert "General Consultation" not in str(body)
+
+
+def test_get_llm_client_raises_when_provider_unset(monkeypatch):
+    """No silent stub fallback: an unset/unknown provider must raise, not guess."""
+    from app.ai.adapter import AIUnavailableError, get_llm_client
+
+    monkeypatch.delenv("AI_LLM_PROVIDER", raising=False)
+    with pytest.raises(AIUnavailableError):
+        get_llm_client()
+
+
+def test_stub_llm_blocked_in_production(monkeypatch):
+    """AI_LLM_PROVIDER=stub must never be usable when APP_ENV=production."""
+    from app.ai.adapter import get_llm_client
+
+    monkeypatch.setenv("AI_LLM_PROVIDER", "stub")
+    monkeypatch.setenv("APP_ENV", "production")
+    with pytest.raises(RuntimeError):
+        get_llm_client()
+
+
+def test_stub_llm_available_outside_production(monkeypatch):
+    from app.ai.adapter import get_llm_client
+
+    monkeypatch.setenv("AI_LLM_PROVIDER", "stub")
+    monkeypatch.setenv("APP_ENV", "development")
+    client = get_llm_client()
+    assert isinstance(client, LocalStubLLMClient)
+
+
+def test_openai_llm_client_raises_without_key(monkeypatch):
+    from app.ai.adapter import AIUnavailableError, OpenAILLMClient
+
+    monkeypatch.delenv("OPENAI_API_KEY", raising=False)
+    with pytest.raises(AIUnavailableError):
+        OpenAILLMClient().complete("system", "user", DummyPrescription)

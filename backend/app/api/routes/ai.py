@@ -1,14 +1,17 @@
 from __future__ import annotations
 
+import logging
 import time
 import os
 from typing import Any
 from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile, status
 from pydantic import BaseModel, Field
 
-from app.ai.adapter import DeIdentifier, get_llm_client, get_speech_client
+from app.ai.adapter import AIError, DeIdentifier, get_llm_client, get_speech_client
 from app.api.dependencies.auth import require_clinic_user
 from app.services.drug_validator import drug_validator
+
+logger = logging.getLogger(__name__)
 
 # dependencies=[...] applies to every route in this file, including any added
 # later — a future route can't be added here without auth by mistake.
@@ -142,12 +145,19 @@ def structure_prescription(payload: StructureRequest) -> dict[str, Any]:
     # Do not pre-correct the transcript. RAG validates extracted spoken terms
     # afterwards; modifying the input here was the source of hallucinated drugs.
     t0 = time.perf_counter()
-    llm = get_llm_client()
-    structured: StructuredPrescriptionSchema = llm.complete(
-        system=_build_system_prompt(),
-        user=scrubbed,
-        schema=StructuredPrescriptionSchema
-    )
+    try:
+        llm = get_llm_client()
+        structured: StructuredPrescriptionSchema = llm.complete(
+            system=_build_system_prompt(),
+            user=scrubbed,
+            schema=StructuredPrescriptionSchema
+        )
+    except AIError:
+        logger.exception("structuring_failed")
+        raise HTTPException(
+            status_code=503,
+            detail="Voice Rx abhi available nahi hai, prescription manually likhein.",
+        )
     llm_latency = (time.perf_counter() - t0) * 1000
 
     # Step 3: Re-attach local patient identity (Section 12.1)
