@@ -163,6 +163,9 @@ def dev_demo_login(payload: dict[str, Any]) -> dict[str, Any]:
     if not user.get("is_active", True):
         raise HTTPException(status.HTTP_403_FORBIDDEN, detail="User is inactive")
 
-    store.update_user(user_id, {"last_login": now_iso()})
+    try:
+        store.update_user(user_id, {"last_login": now_iso()})
+    except Exception:
+        pass
     return auth_response(store.get_user(user_id))
 
