@@ -244,6 +244,38 @@ def test_structure_prescription_503_when_key_missing(monkeypatch):
     assert "General Consultation" not in str(body)
 
 
+def test_voice_to_prescription_503_when_key_missing(monkeypatch):
+    """/ai/voice-to-prescription must surface the same honest 503 as
+    /ai/structure-prescription — it calls structure_prescription() internally with
+    no try/except of its own, so the HTTPException should propagate unchanged."""
+    from fastapi.testclient import TestClient
+    from main import app
+
+    monkeypatch.setenv("AI_LLM_PROVIDER", "openai")
+    monkeypatch.delenv("OPENAI_API_KEY", raising=False)
+    monkeypatch.delenv("GEMINI_API_KEY", raising=False)
+
+    client = TestClient(app)
+    login = client.post(
+        "/auth/login",
+        json={"email": "demo@trikmed.com", "password": "demo1234", "role": "clinic"},
+    )
+    assert login.status_code == 200, login.text
+    token = login.json()["token"]
+
+    # transcript-only (no audio file) exercises the same code path without needing
+    # a real recording or faster-whisper model download in CI.
+    res = client.post(
+        "/ai/voice-to-prescription",
+        data={"transcript": "Patient ko khansi hai. Azithral 500 de do."},
+        headers={"Authorization": f"Bearer {token}"},
+    )
+    assert res.status_code == 503, res.text
+    body = res.json()
+    assert "manually" in body["detail"].lower()
+    assert "General Consultation" not in str(body)
+
+
 def test_get_llm_client_raises_when_provider_unset(monkeypatch):
     """No silent stub fallback: an unset/unknown provider must raise, not guess."""
     from app.ai.adapter import AIUnavailableError, get_llm_client

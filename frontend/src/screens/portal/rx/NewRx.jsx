@@ -417,6 +417,8 @@ export default function NewRx({ doctorId='dr001' }) {
   const [instructionFreeText, setInstructionFreeText] = useState('')
   const [followUp, setFollowUp] = useState('')
   const [doctorNote, setDoctorNote] = useState('')
+  const [aiExtractionWarnings, setAiExtractionWarnings] = useState([]) // dropped/unsupported items from voice extraction
+  const [aiTranscript, setAiTranscript] = useState('') // last voice dictation transcript, shown for doctor cross-check
 
   // ── ui state ─────────────────────────────────────────────────────────────────
   const [showCustomModal, setShowCustomModal] = useState(false)
@@ -555,6 +557,8 @@ export default function NewRx({ doctorId='dr001' }) {
   // ── AI Voice Dictation Handler ──────────────────────────────────────────
   function handleAiPrescriptionParsed(parsedRx) {
     if (!parsedRx) return
+    setAiExtractionWarnings(parsedRx.extraction_warnings?.length ? parsedRx.extraction_warnings : [])
+    setAiTranscript(parsedRx.transcript || parsedRx.raw_transcript || '')
     if (parsedRx.symptoms?.length) {
       setSymptoms(prev => [...new Set([...prev, ...parsedRx.symptoms])])
     }
@@ -1065,6 +1069,26 @@ export default function NewRx({ doctorId='dr001' }) {
                 </div>
               )}
             </div>
+
+            {/* VOICE TRANSCRIPT — so the doctor can cross-check against what was actually said */}
+            {aiTranscript && (
+              <div style={{ background:'#F8FAFC', borderRadius:10, padding:'10px 14px', border:`1px solid ${C.border}` }}>
+                <div style={{ fontSize:11, fontWeight:700, color:C.muted, textTransform:'uppercase', letterSpacing:'.06em', marginBottom:6 }}>Voice transcript</div>
+                <div style={{ fontSize:13, color:C.text, lineHeight:1.5, fontStyle:'italic' }}>&ldquo;{aiTranscript}&rdquo;</div>
+              </div>
+            )}
+
+            {/* EXTRACTION WARNINGS — items the AI could not confidently extract/validate */}
+            {aiExtractionWarnings.length>0 && (
+              <div style={{ background:'#FFFBEB', borderRadius:10, padding:'10px 14px', border:'1px solid #FDE68A' }}>
+                <div style={{ fontSize:12, fontWeight:700, color:'#92400E', marginBottom:6 }}>
+                  Ye cheezein samajh nahi aayi, check karein:
+                </div>
+                <ul style={{ margin:0, paddingLeft:18, fontSize:12, color:'#92400E', lineHeight:1.6 }}>
+                  {aiExtractionWarnings.map((w,i)=><li key={i}>{w}</li>)}
+                </ul>
+              </div>
+            )}
 
             {/* MEDICINES */}
             <div style={{ background:'#fff', borderRadius:10, border:`1px solid ${C.border}`, overflow:'hidden' }}>
