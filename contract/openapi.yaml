@@ -1,0 +1,4353 @@
+openapi: 3.1.0
+info:
+  title: TrikMed API Contract
+  version: 1.0.0
+  description: 'SINGLE SOURCE OF TRUTH for every HTTP endpoint between frontend/ and backend/.
+
+    Rules: (1) Change this file FIRST, then backend, then frontend. (2) No endpoint may exist in code that is not
+    here; backend/tests/test_contract.py enforces it. (3) Endpoints marked x-trikmed-status: planned are agreed
+    but not built yet.
+
+    Baseline generated from the backend on 2026-10-11 (Trikmed_AI + CDCI + lab patches).'
+paths:
+  /health:
+    get:
+      tags:
+      - Health
+      summary: Health
+      operationId: health_health_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                additionalProperties:
+                  type: string
+                type: object
+                title: Response Health Health Get
+  /ai/transcribe:
+    post:
+      tags:
+      - AI Integration
+      summary: Transcribe Audio
+      description: Transcribe doctor speech to text using configured speech provider (adapter pattern).
+      operationId: transcribe_audio_ai_transcribe_post
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Body_transcribe_audio_ai_transcribe_post'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                additionalProperties: true
+                type: object
+                title: Response Transcribe Audio Ai Transcribe Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /ai/structure-prescription:
+    post:
+      tags:
+      - AI Integration
+      summary: Structure Prescription
+      description: Convert raw transcript into a validated structured prescription.
+      operationId: structure_prescription_ai_structure_prescription_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StructureRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StructuredPrescription'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+        '503':
+          description: 'AI unavailable. UI shows: write the prescription manually. Never a fabricated draft.'
+  /ai/voice-to-prescription:
+    post:
+      tags:
+      - AI Integration
+      summary: Voice To Prescription
+      description: End-to-end voice to structured validated prescription.
+      operationId: voice_to_prescription_ai_voice_to_prescription_post
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Body_voice_to_prescription_ai_voice_to_prescription_post'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StructuredPrescription'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+        '503':
+          description: 'AI unavailable. UI shows: write the prescription manually. Never a fabricated draft.'
+  /drugs/search:
+    get:
+      tags:
+      - Drugs
+      summary: Search Drugs
+      description: 'Typeahead for the doctor''s manual medicine search (CDCI). A medicine picked here is the
+
+        doctor''s own choice: the frontend marks it source=''search'', doctor_confirmed=True.'
+      operationId: search_drugs_drugs_search_get
+      parameters:
+      - name: q
+        in: query
+        required: true
+        schema:
+          type: string
+          minLength: 2
+          maxLength: 60
+          title: Q
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 30
+          minimum: 1
+          default: 15
+          title: Limit
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Search Drugs Drugs Search Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /auth/login:
+    post:
+      tags:
+      - Authentication
+      summary: Login
+      operationId: login_auth_login_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                additionalProperties: true
+                type: object
+                title: Response Login Auth Login Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /auth/staff-login:
+    post:
+      tags:
+      - Authentication
+      summary: Staff Login
+      operationId: staff_login_auth_staff_login_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StaffLoginRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                additionalProperties: true
+                type: object
+                title: Response Staff Login Auth Staff Login Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /auth/signup:
+    post:
+      tags:
+      - Authentication
+      summary: Signup
+      operationId: signup_auth_signup_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignupRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                additionalProperties: true
+                type: object
+                title: Response Signup Auth Signup Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /auth/logout:
+    post:
+      tags:
+      - Authentication
+      summary: Logout
+      operationId: logout_auth_logout_post
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                additionalProperties:
+                  type: boolean
+                type: object
+                title: Response Logout Auth Logout Post
+  /auth/me:
+    get:
+      tags:
+      - Authentication
+      summary: Me
+      operationId: me_auth_me_get
+      parameters:
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Me Auth Me Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /auth/forgot-password:
+    post:
+      tags:
+      - Authentication
+      summary: Forgot Password
+      operationId: forgot_password_auth_forgot_password_post
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                additionalProperties:
+                  type: boolean
+                type: object
+                title: Response Forgot Password Auth Forgot Password Post
+  /auth/reset-password:
+    post:
+      tags:
+      - Authentication
+      summary: Reset Password
+      operationId: reset_password_auth_reset_password_post
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                additionalProperties:
+                  type: boolean
+                type: object
+                title: Response Reset Password Auth Reset Password Post
+  /dev/demo-login:
+    post:
+      tags:
+      - Authentication
+      summary: Dev Demo Login
+      description: 'DEV-ONLY shortcut login — bypasses password, issues a real token.
+
+
+        Only available when TRIKMED_DEV_SHORTCUTS env var is explicitly set to ''true''.
+
+        Accepts {"user_id": "USR-..."} and returns the same shape as /auth/login.'
+      operationId: dev_demo_login_dev_demo_login_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              additionalProperties: true
+              type: object
+              title: Payload
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                additionalProperties: true
+                type: object
+                title: Response Dev Demo Login Dev Demo Login Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /demo-requests:
+    post:
+      tags:
+      - Public
+      summary: Create Demo Request
+      operationId: create_demo_request_demo_requests_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DemoRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                additionalProperties: true
+                type: object
+                title: Response Create Demo Request Demo Requests Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /public/clinics:
+    get:
+      tags:
+      - Public
+      summary: Public Clinics
+      description: Public endpoint to get list of clinics for demo selector on login page.
+      operationId: public_clinics_public_clinics_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                items:
+                  additionalProperties: true
+                  type: object
+                type: array
+                title: Response Public Clinics Public Clinics Get
+  /public/clinic-users/{clinic_id}:
+    get:
+      tags:
+      - Public
+      summary: Public Clinic Users
+      description: 'Public endpoint: safe user list for a clinic''s demo role shortcuts.
+
+        Returns only active clinic users — no password hashes exposed.'
+      operationId: public_clinic_users_public_clinic_users__clinic_id__get
+      parameters:
+      - name: clinic_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Clinic Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  additionalProperties: true
+                title: Response Public Clinic Users Public Clinic Users  Clinic Id  Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /staff:
+    get:
+      tags:
+      - Staff
+      summary: List Staff
+      operationId: list_staff_staff_get
+      parameters:
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  additionalProperties: true
+                title: Response List Staff Staff Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    post:
+      tags:
+      - Staff
+      summary: Create Staff
+      operationId: create_staff_staff_post
+      parameters:
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StaffCreateRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Create Staff Staff Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /staff/{staff_id}:
+    patch:
+      tags:
+      - Staff
+      summary: Update Staff
+      operationId: update_staff_staff__staff_id__patch
+      parameters:
+      - name: staff_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Staff Id
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StaffUpdateRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Update Staff Staff  Staff Id  Patch
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - Staff
+      summary: Delete Staff
+      operationId: delete_staff_staff__staff_id__delete
+      parameters:
+      - name: staff_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Staff Id
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: boolean
+                title: Response Delete Staff Staff  Staff Id  Delete
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /staff/{staff_id}/permissions:
+    patch:
+      tags:
+      - Staff
+      summary: Update Permissions
+      operationId: update_permissions_staff__staff_id__permissions_patch
+      parameters:
+      - name: staff_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Staff Id
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PermissionsRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Update Permissions Staff  Staff Id  Permissions Patch
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /staff/activity:
+    get:
+      tags:
+      - Staff
+      summary: Staff Activity
+      operationId: staff_activity_staff_activity_get
+      parameters:
+      - name: staff_id
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Staff Id
+      - name: date
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Date
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  additionalProperties: true
+                title: Response Staff Activity Staff Activity Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /patients:
+    get:
+      tags:
+      - Patients
+      summary: List Patients
+      operationId: list_patients_patients_get
+      parameters:
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  additionalProperties: true
+                title: Response List Patients Patients Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /patients/{patient_id}:
+    get:
+      tags:
+      - Patients
+      summary: Get Patient
+      operationId: get_patient_patients__patient_id__get
+      parameters:
+      - name: patient_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Patient Id
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Get Patient Patients  Patient Id  Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /patients/{patient_id}/appointments:
+    get:
+      tags:
+      - Patients
+      summary: Patient Appointments
+      operationId: patient_appointments_patients__patient_id__appointments_get
+      parameters:
+      - name: patient_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Patient Id
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  additionalProperties: true
+                title: Response Patient Appointments Patients  Patient Id  Appointments Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /patients/{patient_id}/prescriptions:
+    get:
+      tags:
+      - Patients
+      summary: Patient Prescriptions
+      operationId: patient_prescriptions_patients__patient_id__prescriptions_get
+      parameters:
+      - name: patient_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Patient Id
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  additionalProperties: true
+                title: Response Patient Prescriptions Patients  Patient Id  Prescriptions Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /queue/today:
+    get:
+      tags:
+      - Queue
+      summary: Today Queue
+      operationId: today_queue_queue_today_get
+      parameters:
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  additionalProperties: true
+                title: Response Today Queue Queue Today Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /queue/walkin:
+    post:
+      tags:
+      - Queue
+      summary: Create Walkin
+      operationId: create_walkin_queue_walkin_post
+      parameters:
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WalkInRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Create Walkin Queue Walkin Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /queue/{appointment_id}/complete:
+    post:
+      tags:
+      - Queue
+      summary: Complete Queue Item
+      operationId: complete_queue_item_queue__appointment_id__complete_post
+      parameters:
+      - name: appointment_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Appointment Id
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+              title: Payload
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Complete Queue Item Queue  Appointment Id  Complete Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /queue/session/start:
+    post:
+      tags:
+      - Queue
+      summary: Start Session
+      operationId: start_session_queue_session_start_post
+      parameters:
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Start Session Queue Session Start Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /queue/session/end:
+    post:
+      tags:
+      - Queue
+      summary: End Session
+      operationId: end_session_queue_session_end_post
+      parameters:
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response End Session Queue Session End Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /appointments:
+    get:
+      tags:
+      - Appointments
+      summary: List Appointments
+      operationId: list_appointments_appointments_get
+      parameters:
+      - name: date
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Date
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  additionalProperties: true
+                title: Response List Appointments Appointments Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    post:
+      tags:
+      - Appointments
+      summary: Create Appointment
+      operationId: create_appointment_appointments_post
+      parameters:
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+              title: Payload
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Create Appointment Appointments Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /appointments/{appointment_id}:
+    patch:
+      tags:
+      - Appointments
+      summary: Update Appointment
+      operationId: update_appointment_appointments__appointment_id__patch
+      parameters:
+      - name: appointment_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Appointment Id
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+              title: Payload
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Update Appointment Appointments  Appointment Id  Patch
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /clinics:
+    post:
+      tags:
+      - Clinic
+      summary: Create Clinic
+      operationId: create_clinic_clinics_post
+      parameters:
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClinicRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Create Clinic Clinics Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /clinics/{clinic_id}:
+    get:
+      tags:
+      - Clinic
+      summary: Get Clinic
+      operationId: get_clinic_clinics__clinic_id__get
+      parameters:
+      - name: clinic_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Clinic Id
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Get Clinic Clinics  Clinic Id  Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    patch:
+      tags:
+      - Clinic
+      summary: Update Clinic
+      operationId: update_clinic_clinics__clinic_id__patch
+      parameters:
+      - name: clinic_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Clinic Id
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+              title: Payload
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Update Clinic Clinics  Clinic Id  Patch
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /clinic/settings:
+    get:
+      tags:
+      - Clinic
+      summary: Get Clinic Settings
+      operationId: get_clinic_settings_clinic_settings_get
+      parameters:
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Get Clinic Settings Clinic Settings Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    patch:
+      tags:
+      - Clinic
+      summary: Update Clinic Settings
+      operationId: update_clinic_settings_clinic_settings_patch
+      parameters:
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+              title: Payload
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Update Clinic Settings Clinic Settings Patch
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /clinics/{clinic_id}/reviews:
+    get:
+      tags:
+      - Clinic
+      summary: Get Clinic Reviews
+      operationId: get_clinic_reviews_clinics__clinic_id__reviews_get
+      parameters:
+      - name: clinic_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Clinic Id
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  additionalProperties: true
+                title: Response Get Clinic Reviews Clinics  Clinic Id  Reviews Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /portal/demo-requests:
+    get:
+      tags:
+      - Portal
+      summary: Portal Demo Requests
+      operationId: portal_demo_requests_portal_demo_requests_get
+      parameters:
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  additionalProperties: true
+                title: Response Portal Demo Requests Portal Demo Requests Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /portal/overview:
+    get:
+      tags:
+      - Portal
+      summary: Portal Overview
+      operationId: portal_overview_portal_overview_get
+      parameters:
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Portal Overview Portal Overview Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /portal/clinics:
+    get:
+      tags:
+      - Portal
+      summary: Portal Clinics
+      operationId: portal_clinics_portal_clinics_get
+      parameters:
+      - name: city
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: City
+      - name: zone
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Zone
+      - name: status
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Status
+      - name: plan
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Plan
+      - name: search
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Search
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  additionalProperties: true
+                title: Response Portal Clinics Portal Clinics Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    post:
+      tags:
+      - Portal
+      summary: Portal Create Clinic
+      operationId: portal_create_clinic_portal_clinics_post
+      parameters:
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClinicRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Portal Create Clinic Portal Clinics Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /portal/clinics/{clinic_id}:
+    get:
+      tags:
+      - Portal
+      summary: Portal Get Clinic
+      operationId: portal_get_clinic_portal_clinics__clinic_id__get
+      parameters:
+      - name: clinic_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Clinic Id
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Portal Get Clinic Portal Clinics  Clinic Id  Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /portal/onboardings:
+    get:
+      tags:
+      - Portal
+      summary: Portal Onboardings
+      operationId: portal_onboardings_portal_onboardings_get
+      parameters:
+      - name: status
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Status
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  additionalProperties: true
+                title: Response Portal Onboardings Portal Onboardings Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /portal/onboardings/{clinic_id}:
+    patch:
+      tags:
+      - Portal
+      summary: Portal Update Onboarding
+      operationId: portal_update_onboarding_portal_onboardings__clinic_id__patch
+      parameters:
+      - name: clinic_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Clinic Id
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+              title: Payload
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Portal Update Onboarding Portal Onboardings  Clinic Id  Patch
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /portal/team:
+    get:
+      tags:
+      - Portal
+      summary: Portal Team
+      operationId: portal_team_portal_team_get
+      parameters:
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  additionalProperties: true
+                title: Response Portal Team Portal Team Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    post:
+      tags:
+      - Portal
+      summary: Portal Add Member
+      operationId: portal_add_member_portal_team_post
+      parameters:
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+              title: Payload
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Portal Add Member Portal Team Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /portal/dashboard:
+    get:
+      tags:
+      - Portal
+      summary: Portal Dashboard
+      operationId: portal_dashboard_portal_dashboard_get
+      parameters:
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Portal Dashboard Portal Dashboard Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /portal/team/{user_id}:
+    patch:
+      tags:
+      - Portal
+      summary: Portal Update Member
+      operationId: portal_update_member_portal_team__user_id__patch
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: User Id
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+              title: Payload
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Portal Update Member Portal Team  User Id  Patch
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /portal/mrs:
+    get:
+      tags:
+      - Portal
+      summary: Portal Mrs
+      operationId: portal_mrs_portal_mrs_get
+      parameters:
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  additionalProperties: true
+                title: Response Portal Mrs Portal Mrs Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /portal/cities:
+    get:
+      tags:
+      - Portal
+      summary: Portal Cities List
+      operationId: portal_cities_list_portal_cities_get
+      parameters:
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  additionalProperties: true
+                title: Response Portal Cities List Portal Cities Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /portal/commission:
+    get:
+      tags:
+      - Portal
+      summary: Portal Commission
+      operationId: portal_commission_portal_commission_get
+      parameters:
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Portal Commission Portal Commission Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /portal/mr/dashboard:
+    get:
+      tags:
+      - Portal
+      summary: Portal Mr Dashboard
+      operationId: portal_mr_dashboard_portal_mr_dashboard_get
+      parameters:
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Portal Mr Dashboard Portal Mr Dashboard Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /portal/mr/pipeline:
+    get:
+      tags:
+      - Portal
+      summary: Portal Mr Pipeline
+      operationId: portal_mr_pipeline_portal_mr_pipeline_get
+      parameters:
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  additionalProperties: true
+                title: Response Portal Mr Pipeline Portal Mr Pipeline Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    post:
+      tags:
+      - Portal
+      summary: Portal Add Pipeline
+      operationId: portal_add_pipeline_portal_mr_pipeline_post
+      parameters:
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+              title: Payload
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Portal Add Pipeline Portal Mr Pipeline Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /portal/mr/pipeline/{entry_id}:
+    patch:
+      tags:
+      - Portal
+      summary: Portal Update Pipeline
+      operationId: portal_update_pipeline_portal_mr_pipeline__entry_id__patch
+      parameters:
+      - name: entry_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Entry Id
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+              title: Payload
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Portal Update Pipeline Portal Mr Pipeline  Entry Id  Patch
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /portal/mr/pipeline/{entry_id}/notes:
+    post:
+      tags:
+      - Portal
+      summary: Portal Add Pipeline Note
+      operationId: portal_add_pipeline_note_portal_mr_pipeline__entry_id__notes_post
+      parameters:
+      - name: entry_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Entry Id
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+              title: Payload
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: boolean
+                title: Response Portal Add Pipeline Note Portal Mr Pipeline  Entry Id  Notes Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /portal/mr/schedule/{schedule_id}/visited:
+    post:
+      tags:
+      - Portal
+      summary: Portal Mark Visited
+      operationId: portal_mark_visited_portal_mr_schedule__schedule_id__visited_post
+      parameters:
+      - name: schedule_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Schedule Id
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: boolean
+                title: Response Portal Mark Visited Portal Mr Schedule  Schedule Id  Visited Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /portal/hierarchy:
+    get:
+      tags:
+      - Portal
+      summary: Portal Hierarchy
+      operationId: portal_hierarchy_portal_hierarchy_get
+      parameters:
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Portal Hierarchy Portal Hierarchy Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /portal/hierarchy/zones:
+    get:
+      tags:
+      - Portal
+      summary: Portal Hierarchy Zones
+      operationId: portal_hierarchy_zones_portal_hierarchy_zones_get
+      parameters:
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  additionalProperties: true
+                title: Response Portal Hierarchy Zones Portal Hierarchy Zones Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /portal/hierarchy/zones/{zone_id}/cities:
+    get:
+      tags:
+      - Portal
+      summary: Portal Hierarchy Zone Cities
+      operationId: portal_hierarchy_zone_cities_portal_hierarchy_zones__zone_id__cities_get
+      parameters:
+      - name: zone_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Zone Id
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  additionalProperties: true
+                title: Response Portal Hierarchy Zone Cities Portal Hierarchy Zones  Zone Id  Cities Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /portal/hierarchy/cities/{city_id}/mrs:
+    get:
+      tags:
+      - Portal
+      summary: Portal Hierarchy City Mrs
+      operationId: portal_hierarchy_city_mrs_portal_hierarchy_cities__city_id__mrs_get
+      parameters:
+      - name: city_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: City Id
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  additionalProperties: true
+                title: Response Portal Hierarchy City Mrs Portal Hierarchy Cities  City Id  Mrs Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /portal/hierarchy/mrs/{mr_id}/performance:
+    get:
+      tags:
+      - Portal
+      summary: Portal Hierarchy Mr Performance
+      operationId: portal_hierarchy_mr_performance_portal_hierarchy_mrs__mr_id__performance_get
+      parameters:
+      - name: mr_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Mr Id
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Portal Hierarchy Mr Performance Portal Hierarchy Mrs  Mr Id  Performance Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /portal/hr/team:
+    get:
+      tags:
+      - Portal
+      summary: Hr Team
+      operationId: hr_team_portal_hr_team_get
+      parameters:
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  additionalProperties: true
+                title: Response Hr Team Portal Hr Team Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    post:
+      tags:
+      - Portal
+      summary: Hr Add Employee
+      operationId: hr_add_employee_portal_hr_team_post
+      parameters:
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+              title: Payload
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Hr Add Employee Portal Hr Team Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /portal/hr/team/{employee_id}:
+    patch:
+      tags:
+      - Portal
+      summary: Hr Update Employee
+      operationId: hr_update_employee_portal_hr_team__employee_id__patch
+      parameters:
+      - name: employee_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Employee Id
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+              title: Payload
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Hr Update Employee Portal Hr Team  Employee Id  Patch
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /portal/hr/team/{employee_id}/deactivate:
+    patch:
+      tags:
+      - Portal
+      summary: Hr Deactivate Employee
+      operationId: hr_deactivate_employee_portal_hr_team__employee_id__deactivate_patch
+      parameters:
+      - name: employee_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Employee Id
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Hr Deactivate Employee Portal Hr Team  Employee Id  Deactivate Patch
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /portal/hr/attendance:
+    get:
+      tags:
+      - Portal
+      summary: Hr Attendance
+      operationId: hr_attendance_portal_hr_attendance_get
+      parameters:
+      - name: date
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Date
+      - name: employee_id
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Employee Id
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  additionalProperties: true
+                title: Response Hr Attendance Portal Hr Attendance Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /portal/hr/payroll:
+    get:
+      tags:
+      - Portal
+      summary: Hr Payroll
+      operationId: hr_payroll_portal_hr_payroll_get
+      parameters:
+      - name: month
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Month
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  additionalProperties: true
+                title: Response Hr Payroll Portal Hr Payroll Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /portal/hr/payroll/{entry_id}/paid:
+    patch:
+      tags:
+      - Portal
+      summary: Hr Mark Payroll Paid
+      operationId: hr_mark_payroll_paid_portal_hr_payroll__entry_id__paid_patch
+      parameters:
+      - name: entry_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Entry Id
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Hr Mark Payroll Paid Portal Hr Payroll  Entry Id  Paid Patch
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /portal/hr/performance:
+    get:
+      tags:
+      - Portal
+      summary: Hr Performance
+      operationId: hr_performance_portal_hr_performance_get
+      parameters:
+      - name: month
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Month
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  additionalProperties: true
+                title: Response Hr Performance Portal Hr Performance Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /portal/revenue:
+    get:
+      tags:
+      - Portal
+      summary: Portal Revenue
+      operationId: portal_revenue_portal_revenue_get
+      parameters:
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Portal Revenue Portal Revenue Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /portal/zones/{zone_id}/performance:
+    get:
+      tags:
+      - Portal
+      summary: Zone Performance
+      operationId: zone_performance_portal_zones__zone_id__performance_get
+      parameters:
+      - name: zone_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Zone Id
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Zone Performance Portal Zones  Zone Id  Performance Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /portal/cities/{city_id}/performance:
+    get:
+      tags:
+      - Portal
+      summary: City Performance
+      operationId: city_performance_portal_cities__city_id__performance_get
+      parameters:
+      - name: city_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: City Id
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response City Performance Portal Cities  City Id  Performance Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /mr:
+    get:
+      tags:
+      - MR
+      summary: List Mrs
+      operationId: list_mrs_mr_get
+      parameters:
+      - name: status
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Status
+      - name: search
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Search
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  additionalProperties: true
+                title: Response List Mrs Mr Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    post:
+      tags:
+      - MR
+      summary: Create Mr
+      operationId: create_mr_mr_post
+      parameters:
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MRCreateBody'
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Create Mr Mr Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /mr/{mr_id}:
+    patch:
+      tags:
+      - MR
+      summary: Update Mr
+      operationId: update_mr_mr__mr_id__patch
+      parameters:
+      - name: mr_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Mr Id
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MRUpdateBody'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Update Mr Mr  Mr Id  Patch
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - MR
+      summary: Delete Mr
+      operationId: delete_mr_mr__mr_id__delete
+      parameters:
+      - name: mr_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Mr Id
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /mr/{mr_id}/block:
+    post:
+      tags:
+      - MR
+      summary: Block Mr
+      operationId: block_mr_mr__mr_id__block_post
+      parameters:
+      - name: mr_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Mr Id
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MRBlockBody'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Block Mr Mr  Mr Id  Block Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /mr/{mr_id}/unblock:
+    post:
+      tags:
+      - MR
+      summary: Unblock Mr
+      operationId: unblock_mr_mr__mr_id__unblock_post
+      parameters:
+      - name: mr_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Mr Id
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Unblock Mr Mr  Mr Id  Unblock Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /clinics/{clinic_id}/qr:
+    get:
+      tags:
+      - QR
+      summary: Get Clinic Qr
+      description: Return the authenticated clinic's secure QR booking URL and display info.
+      operationId: get_clinic_qr_clinics__clinic_id__qr_get
+      parameters:
+      - name: clinic_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Clinic Id
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Get Clinic Qr Clinics  Clinic Id  Qr Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /q/{qr_code}:
+    get:
+      tags:
+      - QR
+      summary: Redirect Qr To Whatsapp
+      operationId: redirect_qr_to_whatsapp_q__qr_code__get
+      parameters:
+      - name: qr_code
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Qr Code
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /analytics/revenue-reports:
+    get:
+      tags:
+      - Analytics
+      summary: Get Revenue Reports
+      description: Calculate aggregated revenue statistics for the logged-in clinic.
+      operationId: get_revenue_reports_analytics_revenue_reports_get
+      parameters:
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Get Revenue Reports Analytics Revenue Reports Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /dashboard/stats:
+    get:
+      tags:
+      - Analytics
+      summary: Dashboard Stats
+      operationId: dashboard_stats_dashboard_stats_get
+      parameters:
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Dashboard Stats Dashboard Stats Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /prescriptions:
+    get:
+      tags:
+      - Prescriptions
+      summary: List Prescriptions
+      description: List all clinic prescriptions, scoped by authenticated clinic.
+      operationId: list_prescriptions_prescriptions_get
+      parameters:
+      - name: doctor_id
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Doctor Id
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  additionalProperties: true
+                title: Response List Prescriptions Prescriptions Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    post:
+      tags:
+      - Prescriptions
+      summary: Create Prescription
+      description: Create or update a prescription record in unapproved draft state.
+      operationId: create_prescription_prescriptions_post
+      parameters:
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+              title: Payload
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Create Prescription Prescriptions Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /prescriptions/historical-suggestions:
+    get:
+      tags:
+      - Prescriptions
+      summary: Get Historical Suggestions
+      description: 'Section 6: Historical Prescription Suggestions.
+
+
+        Invariants:
+
+        1. Suggestions are strictly scoped to authenticated clinic & doctor.
+
+        2. Suggestions pass through the Drug Safety Validator.
+
+        3. Failure returns an empty list [] - never raises or delays.
+
+        4. Labelled as past prescribing history for clinical reference.'
+      operationId: get_historical_suggestions_prescriptions_historical_suggestions_get
+      parameters:
+      - name: diagnosis
+        in: query
+        required: false
+        schema:
+          type: string
+          description: Diagnosis to retrieve past prescribing history for
+          default: ''
+          title: Diagnosis
+        description: Diagnosis to retrieve past prescribing history for
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  additionalProperties: true
+                title: Response Get Historical Suggestions Prescriptions Historical Suggestions Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /prescriptions/{prescription_id}:
+    get:
+      tags:
+      - Prescriptions
+      summary: Get Prescription
+      description: Retrieve a single prescription with clinic scoping check.
+      operationId: get_prescription_prescriptions__prescription_id__get
+      parameters:
+      - name: prescription_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Prescription Id
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Get Prescription Prescriptions  Prescription Id  Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /prescriptions/{prescription_id}/approve:
+    post:
+      tags:
+      - Prescriptions
+      summary: Approve Prescription
+      description: 'Section 4.3: Structural Doctor Approval Gate.
+
+
+        Requirements:
+
+        1. Explicit human approval action by authenticated doctor.
+
+        2. Writes is_approved = True and approved_at timestamp.
+
+        3. Records approved_by audit trail.
+
+        4. Mints per-prescription RX-XXXXXX token for WhatsApp reminder opt-in (Section 9.2).'
+      operationId: approve_prescription_prescriptions__prescription_id__approve_post
+      parameters:
+      - name: prescription_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Prescription Id
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Approve Prescription Prescriptions  Prescription Id  Approve Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /prescriptions/{prescription_id}/send-whatsapp:
+    post:
+      tags:
+      - Prescriptions
+      summary: Send Prescription Whatsapp
+      operationId: send_prescription_whatsapp_prescriptions__prescription_id__send_whatsapp_post
+      parameters:
+      - name: prescription_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Prescription Id
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: boolean
+                title: Response Send Prescription Whatsapp Prescriptions  Prescription Id  Send Whatsapp Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /prescriptions/{prescription_id}/log-correction:
+    post:
+      tags:
+      - Prescriptions
+      summary: Log Correction
+      description: 'Section 5.3: Log doctor corrections for auditability and AI self-learning.'
+      operationId: log_correction_prescriptions__prescription_id__log_correction_post
+      parameters:
+      - name: prescription_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Prescription Id
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CorrectionRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Log Correction Prescriptions  Prescription Id  Log Correction Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /reminders:
+    get:
+      tags:
+      - Reminders
+      summary: List Reminders
+      operationId: list_reminders_reminders_get
+      parameters:
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  additionalProperties: true
+                title: Response List Reminders Reminders Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /reminders/{reminder_id}:
+    patch:
+      tags:
+      - Reminders
+      summary: Update Reminder
+      operationId: update_reminder_reminders__reminder_id__patch
+      parameters:
+      - name: reminder_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Reminder Id
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+              title: Payload
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Update Reminder Reminders  Reminder Id  Patch
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /missed-calls:
+    get:
+      tags:
+      - Missed Calls
+      summary: List Missed Calls
+      operationId: list_missed_calls_missed_calls_get
+      parameters:
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  additionalProperties: true
+                title: Response List Missed Calls Missed Calls Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /missed-calls/{call_id}/resolve:
+    patch:
+      tags:
+      - Missed Calls
+      summary: Resolve Missed Call
+      operationId: resolve_missed_call_missed_calls__call_id__resolve_patch
+      parameters:
+      - name: call_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Call Id
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+              title: Payload
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Resolve Missed Call Missed Calls  Call Id  Resolve Patch
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /whatsapp/conversations:
+    get:
+      tags:
+      - WhatsApp
+      summary: Whatsapp Conversations
+      operationId: whatsapp_conversations_whatsapp_conversations_get
+      parameters:
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  additionalProperties: true
+                title: Response Whatsapp Conversations Whatsapp Conversations Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /whatsapp/conversations/{phone}:
+    get:
+      tags:
+      - WhatsApp
+      summary: Whatsapp Messages
+      operationId: whatsapp_messages_whatsapp_conversations__phone__get
+      parameters:
+      - name: phone
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Phone
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  additionalProperties: true
+                title: Response Whatsapp Messages Whatsapp Conversations  Phone  Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /whatsapp/stats:
+    get:
+      tags:
+      - WhatsApp
+      summary: Whatsapp Stats
+      operationId: whatsapp_stats_whatsapp_stats_get
+      parameters:
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Whatsapp Stats Whatsapp Stats Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /doctors/me/memory:
+    get:
+      tags:
+      - Doctor Memory
+      summary: What TrikMed has learned about this doctor
+      description: Top medicines and counts learned from the doctor's APPROVED prescriptions (last 180 days). Doctor
+        only. Scoped to doctor + clinic.
+      x-trikmed-status: planned
+      security: &id001
+      - HTTPBearer: []
+      responses:
+        '200':
+          description: Summary
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  window_days:
+                    type: integer
+                  prescriptions_learned_from:
+                    type: integer
+                  top_medicines:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        label:
+                          type: string
+                        uses:
+                          type: integer
+    delete:
+      tags:
+      - Doctor Memory
+      summary: Doctor resets everything TrikMed learned about them
+      x-trikmed-status: planned
+      security: *id001
+      responses:
+        '200':
+          description: Deleted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  deleted_rows:
+                    type: integer
+components:
+  schemas:
+    Body_transcribe_audio_ai_transcribe_post:
+      properties:
+        file:
+          type: string
+          contentMediaType: application/octet-stream
+          title: File
+        language_hint:
+          type: string
+          title: Language Hint
+          default: hi-IN
+      type: object
+      required:
+      - file
+      title: Body_transcribe_audio_ai_transcribe_post
+    Body_voice_to_prescription_ai_voice_to_prescription_post:
+      properties:
+        file:
+          anyOf:
+          - type: string
+            contentMediaType: application/octet-stream
+          - type: 'null'
+          title: File
+        transcript:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Transcript
+        patient_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Patient Name
+        patient_age:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Patient Age
+        doctor_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Doctor Name
+        language_hint:
+          type: string
+          title: Language Hint
+          default: en-IN
+      type: object
+      title: Body_voice_to_prescription_ai_voice_to_prescription_post
+    ClinicRequest:
+      properties:
+        id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Id
+        clinic_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Clinic Name
+        clinicName:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Clinicname
+        doctor_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Doctor Name
+        doctorName:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Doctorname
+        contact_phone:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Contact Phone
+        phone:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Phone
+        whatsapp_number:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Whatsapp Number
+        whatsapp:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Whatsapp
+        address_line1:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Address Line1
+        addressLine1:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Addressline1
+        address_line2:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Address Line2
+        addressLine2:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Addressline2
+        city:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: City
+        zone:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Zone
+        pincode:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Pincode
+        specialization:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Specialization
+        plan_type:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Plan Type
+        plan:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Plan
+        assigned_mr:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Assigned Mr
+        mr:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Mr
+        status:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Status
+        onboarding_notes:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Onboarding Notes
+        login_email:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Login Email
+        loginEmail:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Loginemail
+        login_password:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Login Password
+        loginPassword:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Loginpassword
+      type: object
+      title: ClinicRequest
+    CorrectionRequest:
+      properties:
+        item_type:
+          type: string
+          title: Item Type
+          default: drug
+        original_text:
+          type: string
+          title: Original Text
+        corrected_text:
+          type: string
+          title: Corrected Text
+      type: object
+      required:
+      - original_text
+      - corrected_text
+      title: CorrectionRequest
+    DemoRequest:
+      properties:
+        clinic:
+          type: string
+          title: Clinic
+        doctor:
+          type: string
+          title: Doctor
+        specialty:
+          type: string
+          title: Specialty
+        phone:
+          type: string
+          title: Phone
+        city:
+          type: string
+          title: City
+      type: object
+      required:
+      - clinic
+      - doctor
+      - specialty
+      - phone
+      - city
+      title: DemoRequest
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    LoginRequest:
+      properties:
+        email:
+          type: string
+          title: Email
+        password:
+          type: string
+          title: Password
+        role:
+          type: string
+          enum:
+          - clinic
+          - admin
+          title: Role
+          default: clinic
+      type: object
+      required:
+      - email
+      - password
+      title: LoginRequest
+    MRBlockBody:
+      properties:
+        blocked_reason:
+          type: string
+          maxLength: 500
+          minLength: 5
+          title: Blocked Reason
+      type: object
+      required:
+      - blocked_reason
+      title: MRBlockBody
+    MRCreateBody:
+      properties:
+        full_name:
+          type: string
+          title: Full Name
+        phone:
+          type: string
+          title: Phone
+        email:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Email
+        company_name:
+          type: string
+          title: Company Name
+        designation:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Designation
+        territory:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Territory
+        products_represented:
+          items:
+            type: string
+          type: array
+          title: Products Represented
+        visiting_card_url:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Visiting Card Url
+        profile_photo_url:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Profile Photo Url
+        notes:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Notes
+      type: object
+      required:
+      - full_name
+      - phone
+      - company_name
+      title: MRCreateBody
+    MRUpdateBody:
+      properties:
+        full_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Full Name
+        phone:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Phone
+        email:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Email
+        company_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Company Name
+        designation:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Designation
+        territory:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Territory
+        products_represented:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Products Represented
+        visiting_card_url:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Visiting Card Url
+        profile_photo_url:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Profile Photo Url
+        notes:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Notes
+        status:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Status
+      type: object
+      title: MRUpdateBody
+    PermissionsRequest:
+      properties:
+        custom_permissions:
+          additionalProperties:
+            type: boolean
+          type: object
+          title: Custom Permissions
+      type: object
+      title: PermissionsRequest
+    SignupRequest:
+      properties:
+        clinic_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Clinic Name
+        doctor_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Doctor Name
+        email:
+          type: string
+          title: Email
+        phone:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Phone
+        password:
+          type: string
+          title: Password
+      type: object
+      required:
+      - email
+      - password
+      title: SignupRequest
+    StaffCreateRequest:
+      properties:
+        name:
+          type: string
+          title: Name
+        phone:
+          type: string
+          title: Phone
+        email:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Email
+          default: ''
+        clinic_role:
+          type: string
+          enum:
+          - doctor
+          - receptionist
+          - staff
+          title: Clinic Role
+          default: staff
+        pin:
+          anyOf:
+          - type: string
+            maxLength: 4
+            minLength: 4
+          - type: 'null'
+          title: Pin
+      type: object
+      required:
+      - name
+      - phone
+      title: StaffCreateRequest
+    StaffLoginRequest:
+      properties:
+        clinic_id:
+          type: string
+          title: Clinic Id
+        phone:
+          type: string
+          title: Phone
+        pin:
+          type: string
+          maxLength: 4
+          minLength: 4
+          title: Pin
+      type: object
+      required:
+      - clinic_id
+      - phone
+      - pin
+      title: StaffLoginRequest
+    StaffUpdateRequest:
+      properties:
+        clinic_role:
+          anyOf:
+          - type: string
+            enum:
+            - doctor
+            - receptionist
+            - staff
+          - type: 'null'
+          title: Clinic Role
+        is_active:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Is Active
+      type: object
+      title: StaffUpdateRequest
+    StructureRequest:
+      properties:
+        transcript:
+          type: string
+          title: Transcript
+        patient_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Patient Name
+        patient_age:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Patient Age
+        doctor_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Doctor Name
+      type: object
+      required:
+      - transcript
+      title: StructureRequest
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    WalkInRequest:
+      properties:
+        name:
+          type: string
+          title: Name
+        phone:
+          type: string
+          title: Phone
+        age:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Age
+        gender:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Gender
+        address:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Address
+        emergency:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Emergency
+        complaint:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Complaint
+        doctorId:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Doctorid
+        appointmentDate:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Appointmentdate
+        appointmentTime:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Appointmenttime
+        paymentAmount:
+          anyOf:
+          - type: integer
+          - type: number
+          - type: 'null'
+          title: Paymentamount
+          default: 0
+        paymentMode:
+          type: string
+          enum:
+          - cash
+          - upi
+          - card
+          - skip
+          title: Paymentmode
+          default: cash
+        consultationType:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Consultationtype
+          default: new
+        vitals:
+          additionalProperties: true
+          type: object
+          title: Vitals
+      type: object
+      required:
+      - name
+      - phone
+      title: WalkInRequest
+    ValidatedMedicine:
+      type: object
+      description: One medicine after CDCI validation (+ Doctor Memory suggestions). The UI must show yellow/red
+        until doctor_confirmed.
+      properties:
+        spoken_name:
+          type: string
+          description: Exactly what the doctor said
+        name:
+          type: string
+          description: CDCI label if green, else spoken_name
+        dose:
+          type:
+          - string
+          - 'null'
+        frequency:
+          type:
+          - string
+          - 'null'
+        duration:
+          type:
+          - string
+          - 'null'
+        morning:
+          type:
+          - boolean
+          - 'null'
+        afternoon:
+          type:
+          - boolean
+          - 'null'
+        night:
+          type:
+          - boolean
+          - 'null'
+        after_food:
+          type:
+          - boolean
+          - 'null'
+        validation_band:
+          type: string
+          enum:
+          - green
+          - yellow
+          - red
+        validation_reason:
+          type: string
+          examples:
+          - brand_strength_form_match
+          - strength_not_stated
+          - multiple_forms
+          - strength_in_related_brand
+          - generic_spoken
+          - no_credible_match
+        candidates:
+          type: array
+          items:
+            type: object
+          description: Similar brand names, never pre-selected
+        options:
+          type: array
+          items:
+            type: object
+          description: Strength/form choices for the doctor
+        form:
+          type:
+          - string
+          - 'null'
+        cdci_code:
+          type:
+          - string
+          - 'null'
+        doctor_usual:
+          type:
+          - object
+          - 'null'
+          description: 'Doctor Memory: this doctor''s usual choice. UI shows it FIRST. Still needs the doctor''s
+            tap.'
+          x-trikmed-status: planned
+        suggested_regimen:
+          type:
+          - object
+          - 'null'
+          description: 'Doctor Memory: usual frequency/duration/after_food, only for fields NOT spoken. Never auto-filled.'
+          x-trikmed-status: planned
+    StructuredPrescription:
+      type: object
+      properties:
+        symptoms:
+          type: array
+          items:
+            type: string
+        diagnosis:
+          type:
+          - string
+          - 'null'
+        medicines:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidatedMedicine'
+        investigations:
+          type: array
+          items:
+            type: object
+        follow_up:
+          type:
+          - string
+          - 'null'
+        notes:
+          type:
+          - string
+          - 'null'
+        extraction_warnings:
+          type: array
+          items:
+            type: string
