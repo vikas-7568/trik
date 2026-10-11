@@ -283,11 +283,21 @@ async def voice_to_prescription(
     doctor_name: str | None = Form(None),
     language_hint: str = Form("en-IN")
 ) -> dict[str, Any]:
-    """End-to-end voice to structured validated prescription."""
+    """End-to-end voice to structured validated prescription.
+
+    Contract: VoiceToPrescriptionResponse (contract/openapi.yaml). Transcription failure is the
+    only hard error here — the doctor said something and we captured nothing, there is nothing
+    to show. Structuring failure is NOT a hard error: Whisper's real output must always reach the
+    doctor even when the LLM is unavailable, so that case returns 200 with prescription=null and
+    error set, instead of losing the transcript behind a 503 (Fix Guide Fix 2 still applies —
+    prescription is never fabricated, just reported as unavailable alongside the real transcript).
+    """
     transcript_text = (transcript or "").strip()
     transcribe_latency = 0.0
+    asr_model = os.getenv("ASR_MODEL", os.getenv("OPENAI_TRANSCRIPTION_MODEL", "large-v3"))
 
-    # 1. Transcribe audio using Whisper with medical prompt biasing whenever file is uploaded
+    # 1. Transcribe audio using Whisper with medical prompt biasing whenever file is uploaded.
+    # transcript_text becomes exactly Whisper's output here — never merged with anything else.
     if file:
         try:
             transcribe_res = await transcribe_audio(file=file, language_hint=language_hint)
@@ -296,25 +306,39 @@ async def voice_to_prescription(
                 transcript_text = server_text
                 transcribe_latency = transcribe_res.get("latency_ms", 0.0)
         except Exception as e:
-            # Fall back to client-provided transcript if server audio transcription fails
             if not transcript_text:
                 raise HTTPException(status_code=500, detail=f"Transcription failed: {str(e)}")
 
     if not transcript_text:
         raise HTTPException(status_code=400, detail="No speech or transcript was detected. Please try again.")
 
-    # 2. Structure & Validate with LLM
+    # 2. Structure & Validate with LLM. A failure here must not lose the transcript above.
     struct_req = StructureRequest(
         transcript=transcript_text,
         patient_name=patient_name,
         patient_age=patient_age,
         doctor_name=doctor_name
     )
-    res = structure_prescription(struct_req)
-    res["transcript"] = transcript_text
-    res["raw_transcript"] = transcript_text
-    res["asr_model"] = os.getenv("ASR_MODEL", os.getenv("OPENAI_TRANSCRIPTION_MODEL", "large-v3"))
-    res["transcribe_latency_ms"] = transcribe_latency
-    res["total_latency_ms"] = round(transcribe_latency + res.get("llm_latency_ms", 0.0), 1)
-    return res
+    try:
+        structured = structure_prescription(struct_req)
+    except HTTPException as exc:
+        if exc.status_code != 503:
+            raise
+        return {
+            "transcript": transcript_text,
+            "prescription": None,
+            "error": exc.detail,
+            "asr_model": asr_model,
+            "transcribe_latency_ms": transcribe_latency,
+            "total_latency_ms": None,
+        }
+
+    return {
+        "transcript": transcript_text,
+        "prescription": structured,
+        "error": None,
+        "asr_model": asr_model,
+        "transcribe_latency_ms": transcribe_latency,
+        "total_latency_ms": round(transcribe_latency + structured.get("llm_latency_ms", 0.0), 1),
+    }
 

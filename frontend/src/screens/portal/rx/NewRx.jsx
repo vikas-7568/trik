@@ -565,17 +565,21 @@ export default function NewRx({ doctorId='dr001' }) {
   // ── AI Voice Dictation Handler ──────────────────────────────────────────
   function handleAiPrescriptionParsed(parsedRx) {
     if (!parsedRx) return
-    setAiExtractionWarnings(parsedRx.extraction_warnings?.length ? parsedRx.extraction_warnings : [])
-    setAiTranscript(parsedRx.transcript || parsedRx.raw_transcript || '')
-    if (parsedRx.symptoms?.length) {
-      setSymptoms(prev => [...new Set([...prev, ...parsedRx.symptoms])])
+    // Envelope: { transcript, prescription, error, ... } — transcript is always real Whisper
+    // output and must show even when structuring failed (prescription === null).
+    setAiTranscript(parsedRx.transcript || '')
+    const rx = parsedRx.prescription
+    setAiExtractionWarnings(rx?.extraction_warnings?.length ? rx.extraction_warnings : [])
+    if (!rx) return // structuring failed — nothing to merge, the transcript above is enough
+    if (rx.symptoms?.length) {
+      setSymptoms(prev => [...new Set([...prev, ...rx.symptoms])])
     }
-    if (parsedRx.diagnosis) {
-      const diagArr = Array.isArray(parsedRx.diagnosis) ? parsedRx.diagnosis : [parsedRx.diagnosis]
+    if (rx.diagnosis) {
+      const diagArr = Array.isArray(rx.diagnosis) ? rx.diagnosis : [rx.diagnosis]
       setDiagnosis(prev => [...new Set([...prev, ...diagArr.filter(Boolean)])])
     }
-    if (parsedRx.medicines?.length) {
-      const formattedMeds = parsedRx.medicines.map((m, idx) => ({
+    if (rx.medicines?.length) {
+      const formattedMeds = rx.medicines.map((m, idx) => ({
         id: `ai-med-${Date.now()}-${idx}`,
         brandName: m.name || m.spoken_name || m.raw_name || '',
         genericName: m.generic_name || '',
@@ -593,28 +597,28 @@ export default function NewRx({ doctorId='dr001' }) {
       }))
       setMedicines(prev => [...prev, ...formattedMeds])
     }
-    if (parsedRx.investigations?.length) {
-      const matchedTests = parsedRx.investigations.map(inv => {
-        const found = COMMON_TESTS.find(t => 
-          t.toLowerCase() === inv.toLowerCase() || 
-          t.toLowerCase().startsWith(inv.toLowerCase()) || 
+    if (rx.investigations?.length) {
+      const matchedTests = rx.investigations.map(inv => {
+        const found = COMMON_TESTS.find(t =>
+          t.toLowerCase() === inv.toLowerCase() ||
+          t.toLowerCase().startsWith(inv.toLowerCase()) ||
           inv.toLowerCase().includes(t.toLowerCase().split(' ')[0])
         )
         return found || inv
       })
       setTests(prev => [...new Set([...prev, ...matchedTests])])
     }
-    if (parsedRx.instruction_tags?.length || parsedRx.instructionTags?.length || parsedRx.advice?.length || Array.isArray(parsedRx.instructions)) {
-      const tags = [...(parsedRx.instruction_tags || parsedRx.instructionTags || (Array.isArray(parsedRx.instructions) ? parsedRx.instructions : [])), ...(parsedRx.advice || [])]
+    if (rx.instruction_tags?.length || rx.instructionTags?.length || rx.advice?.length || Array.isArray(rx.instructions)) {
+      const tags = [...(rx.instruction_tags || rx.instructionTags || (Array.isArray(rx.instructions) ? rx.instructions : [])), ...(rx.advice || [])]
       if (tags.length) {
         setInstructionTags(prev => [...new Set([...prev, ...tags])])
       }
     }
-    if (parsedRx.follow_up?.length) {
-      setFollowUp(Array.isArray(parsedRx.follow_up) ? parsedRx.follow_up[0] : parsedRx.follow_up)
+    if (rx.follow_up?.length) {
+      setFollowUp(Array.isArray(rx.follow_up) ? rx.follow_up[0] : rx.follow_up)
     }
-    if (parsedRx.notes) {
-      setInstructionFreeText(prev => prev ? `${prev}. ${parsedRx.notes}` : parsedRx.notes)
+    if (rx.notes) {
+      setInstructionFreeText(prev => prev ? `${prev}. ${rx.notes}` : rx.notes)
     }
   }
 

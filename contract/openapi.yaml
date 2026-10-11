@@ -96,19 +96,35 @@ paths:
               $ref: '#/components/schemas/Body_voice_to_prescription_ai_voice_to_prescription_post'
       responses:
         '200':
-          description: Successful Response
+          description: 'Successful Response. transcript is always the real Whisper output (or the
+            caller-supplied transcript when no audio file is sent) — never modified, never lost.
+            Transcription succeeding does not guarantee structuring succeeded: when the LLM is
+            unavailable, prescription is null and error explains why, but the transcript the doctor
+            actually said is still returned so it is never silently dropped.'
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/StructuredPrescription'
+                $ref: '#/components/schemas/VoiceToPrescriptionResponse'
+        '400':
+          description: No speech or transcript was detected at all.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
         '422':
           description: Validation Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
-        '503':
-          description: 'AI unavailable. UI shows: write the prescription manually. Never a fabricated draft.'
+        '500':
+          description: 'Transcription itself failed (Whisper/speech provider down or no speech
+            detected) — the only hard failure for this endpoint. Structuring failure is reported
+            inside a 200 body instead; see VoiceToPrescriptionResponse.error.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
   /drugs/search:
     get:
       tags:
@@ -4351,3 +4367,41 @@ components:
           type: array
           items:
             type: string
+
+    VoiceToPrescriptionResponse:
+      type: object
+      required:
+      - transcript
+      - prescription
+      - error
+      description: 'Envelope for POST /ai/voice-to-prescription. transcript and prescription are
+        reported independently: a transcription success with a structuring failure still returns
+        the real transcript, with prescription=null and error set, status 200 — never a fabricated
+        prescription (Fix Guide Fix 2), and never a lost transcript.'
+      properties:
+        transcript:
+          type: string
+          description: Exact Whisper transcription output, or the caller-supplied transcript when
+            no audio file was sent. Never modified, never merged with any other text.
+        prescription:
+          type:
+          - object
+          - 'null'
+          allOf:
+          - $ref: '#/components/schemas/StructuredPrescription'
+          description: Null when structuring failed. Never present without error being null, and
+            vice versa.
+        error:
+          type:
+          - string
+          - 'null'
+          description: Set only when transcription succeeded but structuring failed (AIError from
+            app/ai/adapter.py). Null on success.
+        asr_model:
+          type: string
+        transcribe_latency_ms:
+          type: number
+        total_latency_ms:
+          type:
+          - number
+          - 'null'

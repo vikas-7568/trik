@@ -462,7 +462,9 @@ export default function VoiceButton({
     } catch (err) {
       releaseMicrophone()
       mediaRecorderRef.current = null
-      console.error('AI voice error:', err)
+      // Already shown to the doctor via errorMsg below — console.warn, not .error,
+      // so an expected/handled failure doesn't surface as a Next.js dev-overlay "Issue".
+      console.warn('AI voice error:', err)
       setPhase('error')
       setErrorMsg(err?.message || 'Processing failed. Please try again.')
     }
@@ -612,36 +614,43 @@ export default function VoiceButton({
               </div>
             )}
 
+            {/* Structuring failed — transcript above is still real; nothing was fabricated */}
+            {phase === 'done' && result?.error && (
+              <div style={{ marginTop: 10, padding: '8px 10px', background: '#FFFBEB', border: '1px solid #FDE68A', borderRadius: 8, fontSize: 12, color: '#92400E' }}>
+                {result.error} Transcript upar hai — medicines manually add karein.
+              </div>
+            )}
+
             {/* Result summary */}
-            {phase === 'done' && result && (
+            {phase === 'done' && result?.prescription && (
               <div style={{ marginTop: 10 }}>
                 <div style={{ fontSize: 11, fontWeight: 600, color: '#6B7A9A', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                   Added to prescription
                 </div>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-                  {result.symptoms?.length > 0 && (
+                  {result.prescription.symptoms?.length > 0 && (
                     <span style={{ fontSize: 11, background: '#EFF6FF', color: '#1D4ED8', padding: '3px 8px', borderRadius: 6, fontWeight: 600 }}>
-                      {result.symptoms.length} symptom{result.symptoms.length > 1 ? 's' : ''}
+                      {result.prescription.symptoms.length} symptom{result.prescription.symptoms.length > 1 ? 's' : ''}
                     </span>
                   )}
-                  {result.diagnosis && (
+                  {result.prescription.diagnosis && (
                     <span style={{ fontSize: 11, background: '#FEF3C7', color: '#92400E', padding: '3px 8px', borderRadius: 6, fontWeight: 600 }}>
-                      Diagnosis: {Array.isArray(result.diagnosis) ? result.diagnosis[0] : result.diagnosis}
+                      Diagnosis: {Array.isArray(result.prescription.diagnosis) ? result.prescription.diagnosis[0] : result.prescription.diagnosis}
                     </span>
                   )}
-                  {result.medicines?.length > 0 && (
+                  {result.prescription.medicines?.length > 0 && (
                     <span style={{ fontSize: 11, background: '#DCFCE7', color: '#166534', padding: '3px 8px', borderRadius: 6, fontWeight: 600 }}>
-                      {result.medicines.length} medicine{result.medicines.length > 1 ? 's' : ''}
+                      {result.prescription.medicines.length} medicine{result.prescription.medicines.length > 1 ? 's' : ''}
                     </span>
                   )}
-                  {result.investigations?.length > 0 && (
+                  {result.prescription.investigations?.length > 0 && (
                     <span style={{ fontSize: 11, background: '#F3E8FF', color: '#7E22CE', padding: '3px 8px', borderRadius: 6, fontWeight: 600 }}>
-                      {result.investigations.length} test{result.investigations.length > 1 ? 's' : ''}
+                      {result.prescription.investigations.length} test{result.prescription.investigations.length > 1 ? 's' : ''}
                     </span>
                   )}
-                  {result.llm_latency_ms && (
+                  {result.prescription.llm_latency_ms && (
                     <span style={{ fontSize: 11, color: '#9CA3AF', marginLeft: 'auto' }}>
-                      {Math.round(result.llm_latency_ms)}ms
+                      {Math.round(result.prescription.llm_latency_ms)}ms
                     </span>
                   )}
                 </div>

@@ -319,7 +319,9 @@ export default function DashboardHome() {
       })
       setWeeklyStats(merged)
     } catch (error) {
-      console.error('Failed to load dashboard data:', error)
+      // Already shown to the user via the ErrorBanner below — console.warn, not
+      // .error, so a handled failure doesn't surface as a Next.js dev-overlay "Issue".
+      console.warn('Failed to load dashboard data:', error)
       setPageError(error?.message || error?.detail || 'Failed to load dashboard data')
     } finally {
       setPageLoading(false)
