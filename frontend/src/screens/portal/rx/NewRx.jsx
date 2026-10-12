@@ -579,21 +579,30 @@ export default function NewRx({ doctorId='dr001' }) {
       setDiagnosis(prev => [...new Set([...prev, ...diagArr.filter(Boolean)])])
     }
     if (rx.medicines?.length) {
+      // Section 5 safety rule: nothing not spoken is invented. Empty stays empty
+      // ("Not stated" in the UI) — no frequency/form/timing default is fabricated here.
       const formattedMeds = rx.medicines.map((m, idx) => ({
         id: `ai-med-${Date.now()}-${idx}`,
         brandName: m.name || m.spoken_name || m.raw_name || '',
-        genericName: m.generic_name || '',
+        spoken_name: m.spoken_name || m.raw_name || '',
+        genericName: m.proposed_generic_name || m.generic_name || '',
         strength: m.dose || '',
         strengths: m.dose ? [m.dose] : [],
-        form: m.form || 'Tablet',
-        dosage: m.frequency || `${m.morning?1:0}-${m.afternoon?1:0}-${m.night?1:0}`,
+        form: m.form || '',
+        dosage: m.frequency || '',
         timing: m.timing || (m.after_food === true ? 'After food' : m.after_food === false ? 'Before food' : ''),
         duration: m.duration || '',
         notes: m.notes || '',
         validation_band: m.validation_band || 'red',
         validation_status: m.validation_status || 'unverified',
+        validation_reason: m.validation_reason || '',
+        candidates: m.candidates || [],
+        options: m.options || [],
+        cdci_code: m.cdci_code || null,
         matched_name: m.matched_name,
         validation_score: m.validation_score,
+        doctor_confirmed: false,
+        source: 'voice',
       }))
       setMedicines(prev => [...prev, ...formattedMeds])
     }
